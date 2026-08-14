@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SidebarMaterias from "./SidebarMaterias";
 
 export default function Sidebar() {
@@ -6,7 +6,7 @@ export default function Sidebar() {
     <>
       {/* Botão mobile */}
       <button
-        className="btn btn-primary d-md-none m-3"
+        className="btn btn-primary d-md-none m-3 align-self-start"
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#sidebarMobile"
@@ -16,7 +16,7 @@ export default function Sidebar() {
       </button>
 
       <aside
-        className="sidebar bg-black vh-100 border-end border-primary border-5 d-none d-md-flex flex-column"
+        className="sidebar bg-black vh-100 position-sticky top-0 border-end border-primary border-5 d-none d-md-flex flex-column"
         style={{
           width: "240px",
           minWidth: "240px",
@@ -53,9 +53,9 @@ export default function Sidebar() {
         </ul>
         <ul className="list-unstyled ms-3 p-0 mt-auto">
           <li className="mb-3">
-            <Link className="text-white text-decoration-none" to="/">
+            <NavLink className="text-white text-decoration-none" to="/">
               Perfil
-            </Link>
+            </NavLink>
           </li>
           <li className="mb-3">
             <button className="btn btn-link text-white text-decoration-none p-0">
@@ -70,6 +70,7 @@ export default function Sidebar() {
         className="offcanvas offcanvas-start bg-black text-white"
         tabIndex="-1"
         id="sidebarMobile"
+        data-bs-backdrop="false" //Não deixa a tela escura quando a Sidebar está ativa.
       >
         <div className="offcanvas-header">
           <h2 className="text-primary">StudyFlow</h2>
