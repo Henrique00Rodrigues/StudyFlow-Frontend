@@ -1,50 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { Offcanvas } from "bootstrap";
+import dados from "../../data/db.json";
 
 export default function SidebarMaterias() {
-  const materias = [
-    {
-      id: 1,
-      nome: "Banco de Dados",
-    },
-    {
-      id: 2,
-      nome: "Matemática",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-    {
-      id: 3,
-      nome: "Geografia",
-    },
-  ];
-
   function fecharSidebar() {
     const elemento = document.getElementById("materiasSidebar"); //Está usando JS para pegar a div do HTML
 
@@ -73,7 +31,7 @@ export default function SidebarMaterias() {
 
       <div className="offcanvas-body">
         <ul className="list-unstyled">
-          {materias.map((materia) => (
+          {dados.materias.map((materia) => (
             <li key={materia.id} className="mb-3">
               <NavLink
                 className="bg-warning p-4 rounded d-flex justify-content-center align-items-center ms-2 text-black text-decoration-none"
