@@ -15,6 +15,7 @@ export default function SidebarContent({ hideTitle = false }) {
         <li className="mb-3">
           <button
             className="btn btn-link btn-warning text-white text-decoration-none p-0"
+            id="materias-link"
             type="button"
             data-bs-toggle="offcanvas"
             data-bs-target="#materiasSidebar"

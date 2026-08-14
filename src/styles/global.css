@@ -11,3 +11,7 @@ body {
 .page {
   display: flex;
 }
+
+#materias-link:hover {
+  color: black !important;
+}
