@@ -6,11 +6,10 @@ export default function Materia() {
 
   const materia = dados.materias.find((materia) => materia.id === +id);
   const text = materia.flashcards.find(
-    (flashcard) => flashcard.id === 1,
+    (flashcard) => flashcard.id === +id,
   ).frente;
 
-  const textLimitado = text.length > 10 ? `${text.slice(0, 10)}...` : text;
-  console.log(textLimitado);
+  const textLimitado = text.length > 80 ? `${text.slice(0, 80)}...` : text;
 
   return (
     <main>
@@ -21,41 +20,70 @@ export default function Materia() {
       </div>
 
       {/*Agora, os flashcards */}
-
-      <div
-        className="mt-5 ms-5 text-black border border-3 border-black rounded"
-        style={{
-          width: "200px",
-          height: "200px",
-          background: "linear-gradient(120deg, #175bae, #8205a8)",
-        }}
-      >
-        <div className="d-flex justify-content-center pt-3 ps-2 pe-2 text-white fw-semibold">
-          {textLimitado}
+      <div className="d-flex">
+        <div
+          className="mt-5 ms-5 text-black border border-3 border-black rounded d-flex flex-column"
+          style={{
+            width: "200px",
+            height: "200px",
+            background: "linear-gradient(120deg, #175bae, #8205a8)",
+          }}
+        >
+          <div className="d-flex justify-content-center pt-3 ps-2 pe-2 text-white fw-semibold">
+            {textLimitado}
+          </div>
+          <div className="d-flex justify-content-around mt-auto mb-3">
+            <button
+              className="btn btn-danger border border-2 border-black d-flex justify-content-center align-items-center"
+              style={{
+                width: "80px",
+                height: "30px",
+              }}
+            >
+              REVISAR
+            </button>
+            <button
+              className="btn btn-dark border border-2 border-black d-flex justify-content-center align-items-center rounded-circle"
+              style={{
+                width: "40px",
+                height: "40px",
+              }}
+            >
+              ✏️
+            </button>
+          </div>
         </div>
         <div
-          className="d-flex justify-content-around"
-          style={{ marginTop: "80px" }}
+          className="mt-5 ms-5 text-black border border-3 border-black rounded d-flex flex-column"
+          style={{
+            width: "200px",
+            height: "200px",
+            background: "linear-gradient(120deg, #175bae, #8205a8)",
+          }}
         >
-          <button
-            className="btn btn-danger border border-2 border-black d-flex justify-content-center align-items-center"
-            style={{
-              width: "80px",
-              height: "30px",
-              marginTop: "5px",
-            }}
-          >
-            REVISAR
-          </button>
-          <button
-            className="btn btn-dark border border-2 border-black d-flex justify-content-center align-items-center rounded-circle"
-            style={{
-              width: "40px",
-              height: "40px",
-            }}
-          >
-            ✏️
-          </button>
+          <div className="d-flex justify-content-center pt-3 ps-2 pe-2 text-white fw-semibold">
+            {textLimitado}
+          </div>
+          <div className="d-flex justify-content-around mt-auto mb-3">
+            <button
+              className="btn btn-danger border border-2 border-black d-flex justify-content-center align-items-center"
+              style={{
+                width: "80px",
+                height: "30px",
+              }}
+            >
+              REVISAR
+            </button>
+            <button
+              className="btn btn-dark border border-2 border-black d-flex justify-content-center align-items-center rounded-circle"
+              style={{
+                width: "40px",
+                height: "40px",
+              }}
+            >
+              ✏️
+            </button>
+          </div>
         </div>
       </div>
     </main>
