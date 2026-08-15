@@ -9,9 +9,7 @@ export default function Flashcards() {
 
   return (
     <main className="d-flex flex-column align-items-center">
-      <h1 className="text-white">
-        Hey, aqui é a página dos flashcards de {materia.nome} ;)
-      </h1>
+      <h1 className="text-white">Flashcards de {materia.nome}</h1>
       <FlashcardComponent props={materia} />
     </main>
   );
