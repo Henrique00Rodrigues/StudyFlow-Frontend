@@ -26,7 +26,7 @@ export default function SidebarContent({ hideTitle = false }) {
         </li>
 
         <li className="mb-3">
-          <NavLink className="text-white text-decoration-none" to="/">
+          <NavLink className="text-white text-decoration-none" to="/tarefas">
             Tarefas
           </NavLink>
         </li>

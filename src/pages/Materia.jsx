@@ -1,12 +1,18 @@
 import { NavLink, useParams } from "react-router-dom";
-import FlashcardComponent from "../components/FlashcardComponent";
 import buscarMateriaPorId from "../utils/FindMateriaFunction";
 
 export default function Materia() {
-  const { id } = useParams();
+  const { materiaId } = useParams();
 
-  const materia = buscarMateriaPorId(id);
-  //const materia = dados.materias.find((materia) => materia.id === +id);
+  const materia = buscarMateriaPorId(materiaId);
+
+  if (!materia) {
+    return (
+      <div className="d-flex flex-column align-items-center mt-5">
+        <h1 className="text-danger">Matéria não encontrada...</h1>
+      </div>
+    );
+  }
 
   return (
     <main className="d-flex flex-column vh-100">
@@ -18,15 +24,17 @@ export default function Materia() {
       <div className="d-flex justify-content-around align-items-center flex-grow-1">
         <NavLink
           className="btn btn-primary px-5 py-4 fs-4 text-white fw-semibold border-black border-2"
-          to={`/materias/${materia.id}/flashcards/${materia.id}`}
+          to={`/materias/${materia.id}/flashcards`}
         >
           Flashcards
         </NavLink>
-        <NavLink className="btn btn-info px-5 py-4 fs-4 text-black   fw-semibold border-black border-2">
+        <NavLink
+          className="btn btn-info px-5 py-4 fs-4 text-black   fw-semibold border-black border-2"
+          to={`/materias/${materia.id}/tarefas`}
+        >
           Tarefas de {materia.nome}
         </NavLink>
       </div>
-      {/*<FlashcardComponent props={materia} />*/}
     </main>
   );
 }
