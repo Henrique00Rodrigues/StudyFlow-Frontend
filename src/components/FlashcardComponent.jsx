@@ -46,7 +46,7 @@ export default function FlashcardComponent({ props }) {
         })
       ) : (
         <h1 className="text-danger mx-auto" style={{ marginTop: "12rem" }}>
-          Vazio. ;P
+          Vazio... ;P
         </h1>
       )}
     </div>

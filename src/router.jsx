@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
 import Materia from "./pages/Materia";
+import Flashcards from "./pages/Flashcards";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
       {
         path: "/materias/:id",
         element: <Materia />,
+      },
+      {
+        path: "/materias/:id/flashcards/:id",
+        element: <Flashcards />,
       },
     ],
   },
