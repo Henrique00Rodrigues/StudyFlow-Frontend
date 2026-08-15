@@ -1,16 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { Offcanvas } from "bootstrap";
 import dados from "../../data/db.json";
+import fecharSidebar from "../../utils/OffcanvasFunctions";
 
 export default function SidebarMaterias() {
-  function fecharSidebar() {
-    const elemento = document.getElementById("materiasSidebar"); //Está usando JS para pegar a div do HTML
-
-    const offcanvas = Offcanvas.getInstance(elemento); //Está recuperando a instância Offcanvas da div
-
-    offcanvas?.hide(); //Se offcanvas não for null, ele esconde o offcanvas.
-  }
-
   return (
     <div
       className="offcanvas offcanvas-end bg-black text-white border-start border-warning"
