@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CardEditarTarefasMateria from "./TarefasComponents/CardEditarTarefasMateria";
 
-export default function CardTarefas({ props }) {
+export default function CardTarefasMateria({ props }) {
   const [tarefaSelecionada, setTarefaSelecionada] = useState(null);
   const [campoEditando, setCampoEditando] = useState(null); //vai passar o campo que será  editado (ex, "título", "descrição", etc)
 

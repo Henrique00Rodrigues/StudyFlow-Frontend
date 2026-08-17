@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import buscarMateriaPorId from "../../utils/FindMateriaFunction";
-import CardTarefas from "../../components/CardTarefas";
+import CardTarefasMateria from "../../components/CardTarefasMateria";
 
 export default function TarefasMateria() {
   const { materiaId } = useParams();
@@ -18,7 +18,7 @@ export default function TarefasMateria() {
   return (
     <main className="d-flex flex-column align-items-center">
       <h1 className="text-white">Tarefas de {materia.nome}</h1>
-      <CardTarefas props={materia} />
+      <CardTarefasMateria props={materia} />
     </main>
   );
 }
