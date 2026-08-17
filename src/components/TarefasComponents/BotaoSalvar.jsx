@@ -11,11 +11,7 @@ export default function BotaoSalvar({ props }) {
     }
   }
   return (
-    <button
-      type="submit"
-      className="btn btn-primary fw-semibold px-4"
-      onClick={SalvarTarefa}
-    >
+    <button className="btn btn-primary fw-semibold px-4" onClick={SalvarTarefa}>
       Salvar
     </button>
   );
