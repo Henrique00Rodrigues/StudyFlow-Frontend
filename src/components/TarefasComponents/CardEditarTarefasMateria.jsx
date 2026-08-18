@@ -1,5 +1,6 @@
 import BotaoSalvar from "./BotaoSalvar";
 import BotaoEditar from "./BotaoEditar";
+import BotaoRemover from "./BotaoRemover";
 
 export default function CardEditarTarefasMateria({
   campoEditando,
@@ -124,7 +125,10 @@ export default function CardEditarTarefasMateria({
       </div>
 
       <div className="d-flex justify-content-between align-items-center mt-4">
-        <BotaoSalvar props={tarefaSelecionada} />
+        <div className="d-flex gap-2">
+          <BotaoSalvar props={tarefaSelecionada} />
+          <BotaoRemover tarefa={tarefaSelecionada} />
+        </div>
         <div className="d-flex align-items-center gap-3">
           <h5 className="text-warning mb-0">Concluir:</h5>
 
