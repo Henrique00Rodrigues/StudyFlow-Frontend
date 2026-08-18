@@ -1,9 +1,9 @@
-export default function FlashcardComponent({ props }) {
+export default function FlashcardComponent({ materia }) {
   /*props é o atributo matéria que está sendo passado como propriedade*/
   return (
     <div className="d-flex flex-wrap">
-      {props.flashcards?.length > 0 ? (
-        props.flashcards.map((flashcard) => {
+      {materia.flashcards?.length > 0 ? (
+        materia.flashcards.map((flashcard) => {
           const textoLimitado =
             flashcard.frente.length > 70
               ? `${flashcard.frente.slice(0, 70)}...`

@@ -10,7 +10,7 @@ export default function Flashcards() {
   return (
     <main className="d-flex flex-column align-items-center">
       <h1 className="text-white">Flashcards de {materia.nome}</h1>
-      <FlashcardComponent props={materia} />
+      <FlashcardComponent materia={materia} />
     </main>
   );
 }
