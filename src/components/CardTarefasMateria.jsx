@@ -3,7 +3,6 @@ import CardEditarTarefasMateria from "./TarefasComponents/CardEditarTarefasMater
 
 export default function CardTarefasMateria({ props }) {
   const [tarefaSelecionada, setTarefaSelecionada] = useState(null);
-  const [campoEditando, setCampoEditando] = useState(null); //vai passar o campo que será  editado (ex, "título", "descrição", etc)
 
   return (
     <>
@@ -52,8 +51,6 @@ export default function CardTarefasMateria({ props }) {
 
       {tarefaSelecionada && (
         <CardEditarTarefasMateria
-          campoEditando={campoEditando}
-          setCampoEditando={setCampoEditando}
           tarefaSelecionada={tarefaSelecionada}
           setTarefaSelecionada={setTarefaSelecionada}
         />

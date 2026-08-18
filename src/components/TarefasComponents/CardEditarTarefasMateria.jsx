@@ -1,13 +1,15 @@
+import { useState } from "react";
+
 import BotaoSalvar from "./BotaoSalvar";
 import BotaoEditar from "./BotaoEditar";
 import BotaoRemover from "./BotaoRemover";
 
 export default function CardEditarTarefasMateria({
-  campoEditando,
-  setCampoEditando,
   tarefaSelecionada,
   setTarefaSelecionada,
 }) {
+  const [campoEditando, setCampoEditando] = useState(null); //vai passar o campo que será  editado (ex, "título", "descrição", etc)
+
   return (
     <div
       className="position-fixed translate-middle top-50 start-50 bg-dark border border-3 border-black rounded p-4 text-warning fw-semibold overflow-auto"
@@ -126,7 +128,10 @@ export default function CardEditarTarefasMateria({
 
       <div className="d-flex justify-content-between align-items-center mt-4">
         <div className="d-flex gap-2">
-          <BotaoSalvar props={tarefaSelecionada} />
+          <BotaoSalvar
+            props={tarefaSelecionada}
+            setTarefaSelecionada={setTarefaSelecionada}
+          />
           <BotaoRemover tarefa={tarefaSelecionada} />
         </div>
         <div className="d-flex align-items-center gap-3">
@@ -135,6 +140,7 @@ export default function CardEditarTarefasMateria({
           <input
             className="form-check-input m-0"
             type="checkbox"
+            checked={tarefaSelecionada.concluida}
             style={{
               height: "25px",
               width: "25px",
@@ -151,7 +157,9 @@ export default function CardEditarTarefasMateria({
 
       <button
         className="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-        onClick={() => setTarefaSelecionada(null)}
+        onClick={() => {
+          setTarefaSelecionada(null); //Fecha o card.
+        }}
       ></button>
     </div>
   );
