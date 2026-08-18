@@ -1,14 +1,14 @@
 import { useState } from "react";
 import CardEditarTarefasMateria from "./TarefasComponents/CardEditarTarefasMateria";
 
-export default function CardTarefasMateria({ props }) {
+export default function CardTarefasMateria({ materia }) {
   const [tarefaSelecionada, setTarefaSelecionada] = useState(null);
 
   return (
     <>
       <div className="d-flex flex-column align-items-center w-100">
-        {props.tarefas?.length > 0 ? (
-          props.tarefas.map((tarefa) => {
+        {materia.tarefas?.length > 0 ? (
+          materia.tarefas.map((tarefa) => {
             const textoLimitado =
               tarefa.descricao.length > 300
                 ? `${tarefa.descricao.slice(0, 300)}...`

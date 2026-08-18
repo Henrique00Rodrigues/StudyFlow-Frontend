@@ -22,7 +22,7 @@ export default function TarefasMateria() {
   return (
     <main className="d-flex flex-column align-items-center">
       <h1 className="text-white">Tarefas de {materia.nome}</h1>
-      <CardTarefasMateria props={materia} />
+      <CardTarefasMateria materia={materia} />
       <button
         type="button"
         className="btn btn-primary fs-3 fw-semibold px-4 py-2 mb-4 position-fixed bottom-0 start-50 translate-middle-x rounded-5"

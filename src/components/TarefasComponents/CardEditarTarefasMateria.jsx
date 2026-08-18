@@ -10,6 +10,11 @@ export default function CardEditarTarefasMateria({
 }) {
   const [campoEditando, setCampoEditando] = useState(null); //vai passar o campo que será  editado (ex, "título", "descrição", etc)
 
+  const [tarefaModificada, setTarefaModificada] = useState({
+    //É a cópia temporária da tarefa original (tarefaSelecionada), usada enquanto o usuário está editando.
+    ...tarefaSelecionada,
+  });
+
   return (
     <div
       className="position-fixed translate-middle top-50 start-50 bg-dark border border-3 border-black rounded p-4 text-warning fw-semibold overflow-auto"
@@ -26,10 +31,10 @@ export default function CardEditarTarefasMateria({
           className="form-control flex-grow-1"
           type="text"
           disabled={campoEditando !== "titulo"}
-          value={tarefaSelecionada.titulo}
+          value={tarefaModificada.titulo}
           onChange={(ev) =>
-            setTarefaSelecionada({
-              ...tarefaSelecionada,
+            setTarefaModificada({
+              ...tarefaModificada,
               titulo: ev.target.value,
             })
           }
@@ -47,11 +52,11 @@ export default function CardEditarTarefasMateria({
         <textarea
           className="form-control flex-grow-1"
           disabled={campoEditando !== "descricao"}
-          value={tarefaSelecionada.descricao}
+          value={tarefaModificada.descricao}
           rows={2}
           onChange={(ev) =>
-            setTarefaSelecionada({
-              ...tarefaSelecionada,
+            setTarefaModificada({
+              ...tarefaModificada,
               descricao: ev.target.value,
             })
           }
@@ -69,10 +74,10 @@ export default function CardEditarTarefasMateria({
           className="form-control"
           type="text"
           disabled={campoEditando !== "prioridade"}
-          value={tarefaSelecionada.prioridade}
+          value={tarefaModificada.prioridade}
           onChange={(ev) =>
-            setTarefaSelecionada({
-              ...tarefaSelecionada,
+            setTarefaModificada({
+              ...tarefaModificada,
               prioridade: ev.target.value,
             })
           }
@@ -90,10 +95,10 @@ export default function CardEditarTarefasMateria({
           className="form-control"
           type="date"
           disabled={campoEditando !== "dataCriacao"}
-          value={tarefaSelecionada.dataCriacao}
+          value={tarefaModificada.dataCriacao}
           onChange={(ev) =>
-            setTarefaSelecionada({
-              ...tarefaSelecionada,
+            setTarefaModificada({
+              ...tarefaModificada,
               dataCriacao: ev.target.value,
             })
           }
@@ -111,10 +116,10 @@ export default function CardEditarTarefasMateria({
           className="text-black p-2 rounded border border-1 border-danger"
           type="date"
           disabled={campoEditando !== "dataEntrega"}
-          value={tarefaSelecionada.dataEntrega}
+          value={tarefaModificada.dataEntrega}
           onChange={(ev) =>
-            setTarefaSelecionada({
-              ...tarefaSelecionada,
+            setTarefaModificada({
+              ...tarefaModificada,
               dataEntrega: ev.target.value,
             })
           }
@@ -129,10 +134,13 @@ export default function CardEditarTarefasMateria({
       <div className="d-flex justify-content-between align-items-center mt-4">
         <div className="d-flex gap-2">
           <BotaoSalvar
-            props={tarefaSelecionada}
+            tarefaModificada={tarefaModificada}
             setTarefaSelecionada={setTarefaSelecionada}
           />
-          <BotaoRemover tarefa={tarefaSelecionada} />
+          <BotaoRemover
+            tarefaSelecionada={tarefaSelecionada}
+            setTarefaSelecionada={setTarefaSelecionada}
+          />
         </div>
         <div className="d-flex align-items-center gap-3">
           <h5 className="text-warning mb-0">Concluir:</h5>
@@ -140,14 +148,14 @@ export default function CardEditarTarefasMateria({
           <input
             className="form-check-input m-0"
             type="checkbox"
-            checked={tarefaSelecionada.concluida}
+            checked={tarefaModificada.concluida}
             style={{
               height: "25px",
               width: "25px",
             }}
             onChange={(ev) =>
-              setTarefaSelecionada({
-                ...tarefaSelecionada,
+              setTarefaModificada({
+                ...tarefaModificada,
                 concluida: ev.target.checked,
               })
             }
