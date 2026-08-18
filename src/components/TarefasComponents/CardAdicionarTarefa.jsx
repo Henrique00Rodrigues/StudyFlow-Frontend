@@ -11,13 +11,30 @@ export default function CardAdicionarTarefa({ materia, setAdicionandoTarefa }) {
   });
   function AdicionarTarefa() {
     if (
+      dadosTarefa.titulo.trim() === "" ||
+      dadosTarefa.descricao.trim() === "" ||
+      dadosTarefa.prioridade.trim() === "" ||
+      dadosTarefa.dataCriacao === "" ||
+      dadosTarefa.dataEntrega === ""
+    ) {
+      alert("Alguma informação está faltando");
+    } else if (
       dadosTarefa.prioridade.trim().toLowerCase() !== "alta" &&
       dadosTarefa.prioridade.trim().toLowerCase() !== "média" &&
       dadosTarefa.prioridade.trim().toLowerCase() !== "baixa"
     ) {
       alert("A prioriadade precisa ser: Alta/Média/Baixa");
     } else {
-      alert(`Adicionando tarefa: ${JSON.stringify(dadosTarefa)}`);
+      const tarefaTratada = {
+        //Essa váriavel evita que um input seja salvo sem padronização. Ex: titulo: "    Hey  ", prioridade: "   ALta", etc
+        ...dadosTarefa,
+        titulo: dadosTarefa.titulo.trim(),
+        descricao: dadosTarefa.descricao.trim(),
+        prioridade: dadosTarefa.prioridade.trim().toLowerCase(),
+      };
+
+      alert(`Adicionando tarefa: ${JSON.stringify(tarefaTratada)}`);
+      setAdicionandoTarefa(false); //Fecha o card se estiver tudo correto.
     }
   }
   return (
