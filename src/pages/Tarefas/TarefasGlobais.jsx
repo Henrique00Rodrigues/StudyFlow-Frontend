@@ -9,7 +9,7 @@ export default function TarefasGlobais() {
   return (
     <main className="d-flex flex-column align-items-center">
       <h1 className="text-white">Tarefas Globais</h1>
-      <CardTarefasGlobais props={tarefas} />
+      <CardTarefasGlobais tarefas={tarefas} />
     </main>
   );
 }

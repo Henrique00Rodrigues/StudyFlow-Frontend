@@ -1,8 +1,8 @@
-export default function CardTarefasGlobais({ props }) {
+export default function CardTarefasGlobais({ tarefas }) {
   return (
     <div className="d-flex flex-column align-items-center w-100">
-      {props.length > 0 ? (
-        props.map((tarefa) => {
+      {tarefas.length > 0 ? (
+        tarefas.map((tarefa) => {
           const textoLimitado =
             tarefa.descricao.length > 300
               ? `${tarefa.descricao.slice(0, 300)}...`
