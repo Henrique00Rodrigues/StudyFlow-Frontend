@@ -26,7 +26,10 @@ export default function BotaoSalvar({
         prioridade: tarefaModificada.prioridade.trim().toLowerCase(),
       };
       alert(`Salvando tarefa: ${JSON.stringify(tarefaTratada)}`);
-      setTarefaSelecionada(tarefaTratada); //Substitui os dados da tarefa original, pelos dados da tarefaEditada que está sendo salva.
+
+      // Futuramente:
+      // salvar tarefaTratada na lista ou no backend
+      //Vai ser uma função mais ou menos assim: atualizarTarefa(tarefaTratada)
 
       setTarefaSelecionada(null); //Fecha o card de edição de tarefa
     }
