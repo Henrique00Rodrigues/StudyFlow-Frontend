@@ -1,8 +1,11 @@
 import { useState } from "react";
 import CardEditarFlashcards from "./FlashcardsComponents/CardEditarFlashcard";
+import CardRevisarFlashcard from "./FlashcardsComponents/CardRevisarFlashcard";
 
 export default function FlashcardComponent({ materia }) {
   const [flashcardSelecionado, setFlashcardSelecionado] = useState(null);
+  const [flashcardRevisao, setFlashcardRevisao] = useState(null);
+
   return (
     <>
       <div className="d-flex flex-wrap">
@@ -32,6 +35,7 @@ export default function FlashcardComponent({ materia }) {
                       width: "80px",
                       height: "30px",
                     }}
+                    onClick={() => setFlashcardRevisao(flashcard)}
                   >
                     REVISAR
                   </button>
@@ -55,6 +59,14 @@ export default function FlashcardComponent({ materia }) {
           </h1>
         )}
       </div>
+
+      {flashcardRevisao && (
+        <CardRevisarFlashcard
+          flashcardRevisao={flashcardRevisao}
+          setFlashcardRevisao={setFlashcardRevisao}
+          materia={materia}
+        />
+      )}
 
       {flashcardSelecionado && (
         <CardEditarFlashcards
