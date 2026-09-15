@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function CardLogOut({ setConfirmandoLogout, setPerfilAberto }) {
+  const navigate = useNavigate();
+
   function FazerLogout() {
     alert("Usuário deslogado!");
 
@@ -10,6 +14,7 @@ export default function CardLogOut({ setConfirmandoLogout, setPerfilAberto }) {
     if (setPerfilAberto) {
       setPerfilAberto(false);
     }
+    navigate("/login");
   }
 
   return (

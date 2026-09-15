@@ -50,7 +50,11 @@ export default function SidebarContent({ hideTitle = false }) {
             type="button"
             className="btn btn-link btn-info text-white text-decoration-none p-0"
             id="perfil-link"
-            onClick={() => setPerfilAberto(true)}
+            onClick={() => {
+              perfilAberto === false
+                ? setPerfilAberto(true)
+                : setPerfilAberto(false);
+            }}
           >
             Perfil
           </button>

@@ -44,13 +44,15 @@ export default function CardPerfil({ setPerfilAberto }) {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="btn btn-danger mt-3"
-            onClick={() => setConfirmandoLogout(true)}
-          >
-            Log Out
-          </button>
+          <div className="w-100 d-flex justify-content-end mt-3">
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={() => setConfirmandoLogout(true)}
+            >
+              Log Out
+            </button>
+          </div>
         </div>
 
         <button
