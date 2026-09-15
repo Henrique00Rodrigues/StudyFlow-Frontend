@@ -1,4 +1,4 @@
-export default function CardLogOut({ setConfirmandoLogout }) {
+export default function CardLogOut({ setConfirmandoLogout, setPerfilAberto }) {
   function FazerLogout() {
     alert("Usuário deslogado!");
 
@@ -7,6 +7,9 @@ export default function CardLogOut({ setConfirmandoLogout }) {
     // limpar sessão
     // redirecionar para /login
     setConfirmandoLogout(false);
+    if (setPerfilAberto) {
+      setPerfilAberto(false);
+    }
   }
 
   return (

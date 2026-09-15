@@ -22,3 +22,10 @@ body {
   font-style: italic;
   font-size: large;
 }
+
+#perfil-link:hover {
+  padding: 0px 20px !important;
+  color: black !important;
+  font-style: italic;
+  font-size: large;
+}

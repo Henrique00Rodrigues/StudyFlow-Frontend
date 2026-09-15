@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import CardLogOut from "../CardLogOut";
+import CardPerfil from "../CardPerfil";
 
 export default function SidebarContent({ hideTitle = false }) {
+  const [perfilAberto, setPerfilAberto] = useState(false);
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
 
   return (
@@ -44,9 +46,14 @@ export default function SidebarContent({ hideTitle = false }) {
 
       <ul className="list-unstyled ms-3 p-0 mt-auto">
         <li className="mb-3">
-          <NavLink className="text-white text-decoration-none" to="/">
+          <button
+            type="button"
+            className="btn btn-link btn-info text-white text-decoration-none p-0"
+            id="perfil-link"
+            onClick={() => setPerfilAberto(true)}
+          >
             Perfil
-          </NavLink>
+          </button>
         </li>
 
         <li className="mb-3">
@@ -63,6 +70,8 @@ export default function SidebarContent({ hideTitle = false }) {
       {confirmandoLogout && (
         <CardLogOut setConfirmandoLogout={setConfirmandoLogout} />
       )}
+
+      {perfilAberto && <CardPerfil setPerfilAberto={setPerfilAberto} />}
     </>
   );
 }
