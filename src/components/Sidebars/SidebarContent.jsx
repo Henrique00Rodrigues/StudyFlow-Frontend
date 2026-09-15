@@ -46,8 +46,11 @@ export default function SidebarContent({ hideTitle = false }) {
         </li>
 
         <li className="mb-3">
-          <button className="btn btn-link text-white text-decoration-none p-0">
-            Sair
+          <button
+            className="btn btn-link btn-danger text-white text-decoration-none p-0"
+            id="logout-link"
+          >
+            Log Out
           </button>
         </li>
       </ul>

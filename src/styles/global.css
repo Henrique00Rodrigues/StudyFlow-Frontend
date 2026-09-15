@@ -15,3 +15,10 @@ body {
 #materias-link:hover {
   color: black !important;
 }
+
+#logout-link:hover {
+  padding: 0px 20px !important;
+  color: black !important;
+  font-style: italic;
+  font-size: large;
+}
