@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebars/Sidebar";
+import CardAdicionarMateria from "../components/MateriaComponents/CardAdicionarMateria";
 
 export default function Dashboard() {
   const [adicionandoMateria, setAdicionandoMateria] = useState(false);
@@ -35,35 +35,7 @@ export default function Dashboard() {
       </button>
 
       {adicionandoMateria && (
-        <div
-          className="position-fixed translate-middle top-50 start-50 bg-dark border border-3 border-black rounded p-4 text-warning fw-semibold overflow-auto"
-          style={{
-            width: "90%",
-            maxWidth: "700px",
-            maxHeight: "90vh",
-            zIndex: 1050,
-          }}
-        >
-          <h5 className="text-warning">Nome da matéria:</h5>
-          <input className="form-control" type="text" />
-          <button
-            type="button"
-            className="btn-close btn-close-white position-absolute top-0 end-0 m-3"
-            onClick={() => setAdicionandoMateria(false)}
-          />
-          <div className="mt-4">
-            <button
-              type="button"
-              className="btn btn-primary fw-semibold px-4"
-              onClick={() => {
-                alert(`O botão foi clicado!`);
-                setAdicionandoMateria(false);
-              }}
-            >
-              Adicionar
-            </button>
-          </div>
-        </div>
+        <CardAdicionarMateria setAdicionandoMateria={setAdicionandoMateria} />
       )}
     </main>
   );
