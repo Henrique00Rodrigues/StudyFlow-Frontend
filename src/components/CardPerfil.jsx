@@ -3,11 +3,26 @@ import CardLogOut from "./CardLogOut";
 
 export default function CardPerfil({ setPerfilAberto }) {
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
+  const [fotoPerfil, setFotoPerfil] = useState(null);
 
   const usuario = {
     email: "usuario@email.com",
     dataCriacao: "15/09/2026",
   };
+
+  function SelecionarFoto(ev) {
+    const arquivo = ev.target.files[0];
+
+    if (arquivo) {
+      const urlFoto = URL.createObjectURL(arquivo);
+      setFotoPerfil(urlFoto);
+    }
+  }
+
+  function SalvarAlteracoes() {
+    alert("Salvando...");
+    setPerfilAberto(false);
+  }
 
   return (
     <>
@@ -23,7 +38,7 @@ export default function CardPerfil({ setPerfilAberto }) {
 
         <div className="d-flex flex-column align-items-center">
           <img
-            src="https://placehold.co/150x150"
+            src={fotoPerfil || "https://placehold.co/150x150"}
             alt="Foto de perfil"
             className="rounded-circle border border-3 border-info mb-4"
             style={{
@@ -31,6 +46,13 @@ export default function CardPerfil({ setPerfilAberto }) {
               height: "150px",
               objectFit: "cover",
             }}
+          />
+
+          <input
+            type="file"
+            accept="image/*"
+            className="form-control mb-4"
+            onChange={SelecionarFoto}
           />
 
           <div className="w-100">
@@ -44,7 +66,14 @@ export default function CardPerfil({ setPerfilAberto }) {
             </p>
           </div>
 
-          <div className="w-100 d-flex justify-content-end mt-3">
+          <div className="w-100 d-flex justify-content-between mt-3">
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={SalvarAlteracoes}
+            >
+              Salvar
+            </button>
             <button
               type="button"
               className="btn btn-danger"
