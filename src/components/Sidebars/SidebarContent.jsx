@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import CardLogOut from "../CardLogOut";
 
 export default function SidebarContent({ hideTitle = false }) {
+  const [confirmandoLogout, setConfirmandoLogout] = useState(false);
+
   return (
     <>
       {!hideTitle && <h2 className="text-primary m-3 mb-5">StudyFlow</h2>}
@@ -49,11 +53,16 @@ export default function SidebarContent({ hideTitle = false }) {
           <button
             className="btn btn-link btn-danger text-white text-decoration-none p-0"
             id="logout-link"
+            onClick={() => setConfirmandoLogout(true)}
           >
             Log Out
           </button>
         </li>
       </ul>
+
+      {confirmandoLogout && (
+        <CardLogOut setConfirmandoLogout={setConfirmandoLogout} />
+      )}
     </>
   );
 }
