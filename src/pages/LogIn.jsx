@@ -19,10 +19,16 @@ export default function Login() {
           <input type="email" className="form-control" />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-3">
           <label className="form-label">Senha:</label>
 
           <input type="password" className="form-control" />
+        </div>
+
+        <div className="mb-4">
+          <label className="form-label">Apelido:</label>
+
+          <input type="text" className="form-control" />
         </div>
 
         <button type="button" className="btn btn-primary w-100 mb-3">
