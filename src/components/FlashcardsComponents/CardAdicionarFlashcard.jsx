@@ -21,7 +21,7 @@ export default function CardAdicionarFlashcard({
       dadosFlashcard.verso.trim() === ""
     ) {
       setErro(
-        "Alguma informação está faltando. (O frontend impediu que essa requisição fosse enviada ao servidor backend, uma vez que ela é desnecessária, evitando, dessa forma, gargalos.)",
+        "Alguma informação está faltando. (O frontend impediu o envio de uma requisição desnecessária ao servidor backend.)",
       );
       return;
     }

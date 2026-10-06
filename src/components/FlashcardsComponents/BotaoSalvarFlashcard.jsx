@@ -1,26 +1,42 @@
+import { atualizarFlashcard } from "../../services/flashcardService";
+
 export default function BotaoSalvarFlashcard({
   flashcardModificado,
   setFlashcardSelecionado,
+  setAtualizarFlashcards,
+  setErro,
 }) {
-  function SalvarAlteracao() {
+  async function SalvarAlteracao() {
     if (
       flashcardModificado.frente.trim() === "" ||
       flashcardModificado.verso.trim() === ""
     ) {
-      alert("Alguma informação está faltando");
-    } else {
+      setErro(
+        "Alguma informação está faltando. (O frontend impediu o envio de uma requisição desnecessária ao servidor backend.)",
+      );
+      return;
+    }
+
+    try {
+      setErro("");
+
       const flashcardTratado = {
-        //Tratando o flashcard para não salvar espaços desnecessários.
         ...flashcardModificado,
         frente: flashcardModificado.frente.trim(),
         verso: flashcardModificado.verso.trim(),
       };
-      alert(`Salvando flashcard: ${JSON.stringify(flashcardTratado)}`);
 
-      //Futuramente: atualizar o flashcard na lista ou no backend
-      //Vai ser uma função mais ou menos assim: atualizarFlashcard(flashcardTratado)
+      await atualizarFlashcard(
+        flashcardTratado.id,
+        flashcardTratado.frente,
+        flashcardTratado.verso,
+      );
 
-      setFlashcardSelecionado(null); //Fecha o card de edição
+      setAtualizarFlashcards((valorAtual) => valorAtual + 1);
+
+      setFlashcardSelecionado(null);
+    } catch (error) {
+      setErro(error.message);
     }
   }
 

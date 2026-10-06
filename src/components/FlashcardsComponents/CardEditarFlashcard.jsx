@@ -5,10 +5,14 @@ import BotaoRemoverFlashcard from "./BotaoRemoverFlashcard";
 export default function CardEditarFlashcards({
   flashcardSelecionado,
   setFlashcardSelecionado,
+  setAtualizarFlashcards,
 }) {
   const [flashcardModificado, setFlashcardModificado] = useState({
     ...flashcardSelecionado,
   });
+
+  const [erro, setErro] = useState("");
+
   return (
     <div
       className="position-fixed translate-middle top-50 start-50 bg-dark border border-3 border-black rounded p-4 text-warning fw-semibold"
@@ -46,10 +50,18 @@ export default function CardEditarFlashcards({
         }
       />
 
+      {erro && (
+        <div className="alert alert-danger mt-3" role="alert">
+          {erro}
+        </div>
+      )}
+
       <div className="d-flex gap-2 mt-4">
         <BotaoSalvarFlashcard
           flashcardModificado={flashcardModificado}
           setFlashcardSelecionado={setFlashcardSelecionado}
+          setAtualizarFlashcards={setAtualizarFlashcards}
+          setErro={setErro}
         />
         <BotaoRemoverFlashcard
           flashcardSelecionado={flashcardSelecionado}

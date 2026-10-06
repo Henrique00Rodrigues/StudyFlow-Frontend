@@ -5,7 +5,11 @@ import CardRevisarFlashcard from "./FlashcardsComponents/CardRevisarFlashcard";
 
 import { listarFlashcardsMateria } from "../services/flashcardService";
 
-export default function FlashcardComponent({ materia, atualizarFlashcards }) {
+export default function FlashcardComponent({
+  materia,
+  atualizarFlashcards,
+  setAtualizarFlashcards,
+}) {
   const [flashcards, setFlashcards] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -112,6 +116,7 @@ export default function FlashcardComponent({ materia, atualizarFlashcards }) {
         <CardEditarFlashcards
           flashcardSelecionado={flashcardSelecionado}
           setFlashcardSelecionado={setFlashcardSelecionado}
+          setAtualizarFlashcards={setAtualizarFlashcards}
         />
       )}
     </>

@@ -66,6 +66,7 @@ export default function Flashcards() {
       <FlashcardComponent
         materia={materia}
         atualizarFlashcards={atualizarFlashcards}
+        setAtualizarFlashcards={setAtualizarFlashcards}
       />
       <button
         type="button"
