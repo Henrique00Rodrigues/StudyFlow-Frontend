@@ -1,5 +1,29 @@
 const API_URL = "http://localhost:3000/api";
 
+export async function signup(apelido, email, senha) {
+  const response = await fetch(`${API_URL}/auth/signup`, {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      apelido,
+      email,
+      senha,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.mensagem || "Erro ao criar conta.");
+  }
+
+  return data;
+}
+
 export async function login(email, senha) {
   const response = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
