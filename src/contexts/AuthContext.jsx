@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 import {
+  logout as logoutService,
   login as loginService,
   buscarUsuarioAtual,
 } from "../services/authService";
@@ -10,6 +11,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
   const [carregando, setCarregando] = useState(true);
+  const [deslogando, setDeslogando] = useState(false);
 
   useEffect(() => {
     async function verificarSessao() {
@@ -35,12 +37,22 @@ export function AuthProvider({ children }) {
     return resultado;
   }
 
+  async function logout() {
+    setDeslogando(true);
+
+    await logoutService();
+
+    setUsuario(null);
+  }
+
   return (
     <AuthContext.Provider
       value={{
         usuario,
         carregando,
+        deslogando,
         login,
+        logout,
       }}
     >
       {children}

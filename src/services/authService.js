@@ -39,3 +39,16 @@ export async function buscarUsuarioAtual() {
 
   return data.usuario;
 }
+
+export async function logout() {
+  const response = await fetch(`${API_URL}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Erro ao realizar logout.");
+  }
+
+  return response.json();
+}

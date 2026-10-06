@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+
 import CardLogOut from "../CardLogOut";
 import CardPerfil from "../CardPerfil";
+
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function SidebarContent({ hideTitle = false }) {
   const [perfilAberto, setPerfilAberto] = useState(false);
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
+
+  const { logout } = useAuth();
+
+  async function handleLogout() {
+    await logout();
+  }
 
   return (
     <>
@@ -72,7 +81,10 @@ export default function SidebarContent({ hideTitle = false }) {
       </ul>
 
       {confirmandoLogout && (
-        <CardLogOut setConfirmandoLogout={setConfirmandoLogout} />
+        <CardLogOut
+          setConfirmandoLogout={setConfirmandoLogout}
+          handleLogout={handleLogout}
+        />
       )}
 
       {perfilAberto && <CardPerfil setPerfilAberto={setPerfilAberto} />}

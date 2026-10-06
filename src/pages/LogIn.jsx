@@ -15,6 +15,8 @@ export default function Login() {
 
   const mensagemRedirecionamento = location.state?.mensagem;
 
+  const tipoMensagem = location.state?.tipo;
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -44,7 +46,12 @@ export default function Login() {
         <h1 className="text-info text-center mb-4">Login</h1>
 
         {mensagemRedirecionamento && (
-          <div className="alert alert-warning" role="alert">
+          <div
+            className={`alert ${
+              tipoMensagem === "sucesso" ? "alert-success" : "alert-warning"
+            }`}
+            role="alert"
+          >
             {mensagemRedirecionamento}
           </div>
         )}

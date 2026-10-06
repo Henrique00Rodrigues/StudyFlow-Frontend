@@ -1,20 +1,15 @@
-import { useNavigate } from "react-router-dom";
+export default function CardLogOut({
+  setConfirmandoLogout,
+  setPerfilAberto,
+  handleLogout,
+}) {
+  async function FazerLogout() {
+    await handleLogout();
 
-export default function CardLogOut({ setConfirmandoLogout, setPerfilAberto }) {
-  const navigate = useNavigate();
-
-  function FazerLogout() {
-    alert("Usuário deslogado!");
-
-    // Futuramente:
-    // remover token
-    // limpar sessão
-    // redirecionar para /login
     setConfirmandoLogout(false);
     if (setPerfilAberto) {
       setPerfilAberto(false);
     }
-    navigate("/login");
   }
 
   return (
