@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { login } from "../services/authService";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -9,6 +9,11 @@ export default function Login() {
   const [erro, setErro] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { login } = useAuth();
+
+  const mensagemRedirecionamento = location.state?.mensagem;
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -37,6 +42,12 @@ export default function Login() {
         }}
       >
         <h1 className="text-info text-center mb-4">Login</h1>
+
+        {mensagemRedirecionamento && (
+          <div className="alert alert-warning" role="alert">
+            {mensagemRedirecionamento}
+          </div>
+        )}
 
         <div className="mb-3">
           <label className="form-label">Email:</label>

@@ -8,12 +8,18 @@ import TarefasMateria from "./pages/Tarefas/TarefasMateria";
 import Login from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Dashboard /> },
       {

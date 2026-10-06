@@ -24,3 +24,18 @@ export async function login(email, senha) {
 
   return data;
 }
+
+export async function buscarUsuarioAtual() {
+  const response = await fetch(`${API_URL}/usuarios/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = await response.json();
+
+  return data.usuario;
+}
