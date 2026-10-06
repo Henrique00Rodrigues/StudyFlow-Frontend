@@ -15,6 +15,9 @@ export default function Flashcards() {
 
   const [adicionandoFlashcard, setAdicionandoFlashcard] = useState(false);
 
+  // Contador usado como sinal para recarregar a lista de flashcards após alguma alteração, evitando, dessa forma, uma atualização manual com F5.
+  const [atualizarFlashcards, setAtualizarFlashcards] = useState(0);
+
   useEffect(() => {
     async function carregarMateria() {
       try {
@@ -60,7 +63,10 @@ export default function Flashcards() {
   return (
     <main className="d-flex flex-column align-items-center">
       <h1 className="text-white">Flashcards de {materia.nome}</h1>
-      <FlashcardComponent materia={materia} />
+      <FlashcardComponent
+        materia={materia}
+        atualizarFlashcards={atualizarFlashcards}
+      />
       <button
         type="button"
         className="btn btn-primary fs-3 fw-semibold px-4 py-2 mb-4 position-fixed bottom-0 start-50 translate-middle-x rounded-5"
@@ -73,6 +79,7 @@ export default function Flashcards() {
         <CardAdicionarFlashcard
           materia={materia}
           setAdicionandoFlashcard={setAdicionandoFlashcard}
+          setAtualizarFlashcards={setAtualizarFlashcards}
         />
       )}
     </main>

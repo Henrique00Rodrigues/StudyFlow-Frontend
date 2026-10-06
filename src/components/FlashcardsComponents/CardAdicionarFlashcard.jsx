@@ -5,6 +5,7 @@ import { criarFlashcard } from "../../services/flashcardService";
 export default function CardAdicionarFlashcard({
   materia,
   setAdicionandoFlashcard,
+  setAtualizarFlashcards,
 }) {
   const [dadosFlashcard, setDadosFlashcard] = useState({
     frente: "",
@@ -39,6 +40,8 @@ export default function CardAdicionarFlashcard({
         flashcardTratado.verso,
         materia.id,
       );
+
+      setAtualizarFlashcards((valorAtual) => valorAtual + 1);
 
       setAdicionandoFlashcard(false);
     } catch (error) {

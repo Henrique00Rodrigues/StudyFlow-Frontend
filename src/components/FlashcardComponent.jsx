@@ -5,7 +5,7 @@ import CardRevisarFlashcard from "./FlashcardsComponents/CardRevisarFlashcard";
 
 import { listarFlashcardsMateria } from "../services/flashcardService";
 
-export default function FlashcardComponent({ materia }) {
+export default function FlashcardComponent({ materia, atualizarFlashcards }) {
   const [flashcards, setFlashcards] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -29,7 +29,7 @@ export default function FlashcardComponent({ materia }) {
     }
 
     carregarFlashcards();
-  }, [materia.id]);
+  }, [materia.id, atualizarFlashcards]);
 
   if (carregando) {
     return <p className="text-white mt-5">Carregando flashcards...</p>;
