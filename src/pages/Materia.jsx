@@ -1,10 +1,48 @@
 import { NavLink, useParams } from "react-router-dom";
-import buscarMateriaPorId from "../utils/FindMateriaFunction";
+import { useEffect, useState } from "react";
+
+import { buscarMateriaPorId } from "../services/materiaService";
 
 export default function Materia() {
   const { materiaId } = useParams();
 
-  const materia = buscarMateriaPorId(materiaId);
+  const [materia, setMateria] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+
+  useEffect(() => {
+    async function carregarMateria() {
+      try {
+        setErro("");
+
+        const resultado = await buscarMateriaPorId(materiaId);
+
+        setMateria(resultado);
+      } catch (error) {
+        setErro(error.message);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarMateria();
+  }, [materiaId]);
+
+  if (carregando) {
+    return (
+      <div className="d-flex justify-content-center mt-5">
+        <p className="text-white">Carregando matéria...</p>
+      </div>
+    );
+  }
+
+  if (erro) {
+    return (
+      <div className="d-flex flex-column align-items-center mt-5">
+        <h1 className="text-danger">{erro}</h1>
+      </div>
+    );
+  }
 
   if (!materia) {
     return (

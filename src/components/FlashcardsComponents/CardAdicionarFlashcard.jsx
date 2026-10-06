@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { criarFlashcard } from "../../services/flashcardService";
+
 export default function CardAdicionarFlashcard({
   materia,
   setAdicionandoFlashcard,
@@ -9,27 +11,38 @@ export default function CardAdicionarFlashcard({
     verso: "",
   });
 
-  function AdicionarFlashcard() {
+  const [erro, setErro] = useState("");
+
+  async function AdicionarFlashcard() {
+    //Este if está validando somente no frontend, para que não precise fazer uma requisição desnecessária ao backend
     if (
       dadosFlashcard.frente.trim() === "" ||
       dadosFlashcard.verso.trim() === ""
     ) {
-      alert("Alguma informação está faltando");
-    } else {
+      setErro(
+        "Alguma informação está faltando. (O frontend impediu que essa requisição fosse enviada ao servidor backend, uma vez que ela é desnecessária, evitando, dessa forma, gargalos.)",
+      );
+      return;
+    }
+
+    try {
+      setErro("");
+
       const flashcardTratado = {
         //Essa váriavel evita que um input seja salvo sem padronização. Ex: frente: "    O que é....?  ", verso: "   sdfasf...", etc
-        ...dadosFlashcard,
         frente: dadosFlashcard.frente.trim(),
         verso: dadosFlashcard.verso.trim(),
       };
-      alert(
-        `Adicionando flashcard na matéria ${materia.nome}:  ${JSON.stringify(flashcardTratado)}`,
+
+      await criarFlashcard(
+        flashcardTratado.frente,
+        flashcardTratado.verso,
+        materia.id,
       );
-      // Futuramente:
-      // criar objeto Flashcard
-      // associar à materia
-      // salvar no backend
+
       setAdicionandoFlashcard(false);
+    } catch (error) {
+      setErro(error.message);
     }
   }
 
@@ -70,6 +83,12 @@ export default function CardAdicionarFlashcard({
           })
         }
       />
+
+      {erro && (
+        <div className="alert alert-danger mt-3" role="alert">
+          {erro}
+        </div>
+      )}
 
       <div className="mt-4">
         <button

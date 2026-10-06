@@ -1,20 +1,58 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import CardEditarFlashcards from "./FlashcardsComponents/CardEditarFlashcard";
 import CardRevisarFlashcard from "./FlashcardsComponents/CardRevisarFlashcard";
 
+import { listarFlashcardsMateria } from "../services/flashcardService";
+
 export default function FlashcardComponent({ materia }) {
+  const [flashcards, setFlashcards] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
+
   const [flashcardSelecionado, setFlashcardSelecionado] = useState(null);
   const [flashcardRevisao, setFlashcardRevisao] = useState(null);
+
+  useEffect(() => {
+    async function carregarFlashcards() {
+      try {
+        setErro("");
+
+        const resultado = await listarFlashcardsMateria(materia.id);
+
+        setFlashcards(resultado);
+      } catch (error) {
+        setErro(error.message);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarFlashcards();
+  }, [materia.id]);
+
+  if (carregando) {
+    return <p className="text-white mt-5">Carregando flashcards...</p>;
+  }
+
+  if (erro) {
+    return (
+      <div className="alert alert-danger mt-5" role="alert">
+        {erro}
+      </div>
+    );
+  }
 
   return (
     <>
       <div className="d-flex flex-wrap">
-        {materia.flashcards?.length > 0 ? (
-          materia.flashcards.map((flashcard) => {
+        {flashcards.length > 0 ? (
+          flashcards.map((flashcard) => {
             const textoLimitado =
               flashcard.frente.length > 70
                 ? `${flashcard.frente.slice(0, 70)}...`
                 : flashcard.frente;
+
             return (
               <div
                 key={flashcard.id}
@@ -28,6 +66,7 @@ export default function FlashcardComponent({ materia }) {
                 <div className="d-flex justify-content-center pt-3 ps-2 pe-2 text-white fw-semibold">
                   {textoLimitado}
                 </div>
+
                 <div className="d-flex justify-content-around mt-auto mb-3">
                   <button
                     className="btn btn-danger border border-2 border-black d-flex justify-content-center align-items-center"
@@ -39,6 +78,7 @@ export default function FlashcardComponent({ materia }) {
                   >
                     REVISAR
                   </button>
+
                   <button
                     className="btn btn-dark border border-2 border-black d-flex justify-content-center align-items-center rounded-circle"
                     style={{
