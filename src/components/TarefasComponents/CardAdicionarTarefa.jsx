@@ -6,6 +6,7 @@ export default function CardAdicionarTarefa({
   materia,
   setAdicionandoTarefa,
   setAtualizarTarefas,
+  setMensagemSucesso,
 }) {
   const [dadosTarefa, setDadosTarefa] = useState({
     titulo: "",
@@ -60,6 +61,12 @@ export default function CardAdicionarTarefa({
         tarefaTratada.dataEntrega,
         materia.id,
       );
+
+      setMensagemSucesso("Tarefa criada com sucesso.");
+
+      setTimeout(() => {
+        setMensagemSucesso("");
+      }, 3000);
 
       setAtualizarTarefas((valorAtual) => valorAtual + 1);
 

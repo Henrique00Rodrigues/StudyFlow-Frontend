@@ -16,6 +16,8 @@ export default function TarefasMateria() {
   // Contador usado como sinal para recarregar a lista de tarefas após alguma alteração, evitando uma atualização manual com F5.
   const [atualizarTarefas, setAtualizarTarefas] = useState(0);
 
+  const [mensagemSucesso, setMensagemSucesso] = useState("");
+
   const [adicionandoTarefa, setAdicionandoTarefa] = useState(false);
 
   useEffect(() => {
@@ -62,6 +64,16 @@ export default function TarefasMateria() {
 
   return (
     <main className="d-flex flex-column align-items-center">
+      {mensagemSucesso && (
+        <div
+          className="alert alert-success bg-success position-fixed top-0 start-50 fw-semibold translate-middle-x mt-3 mensagem-sucesso"
+          style={{ zIndex: 2000 }}
+          role="alert"
+        >
+          {mensagemSucesso}
+        </div>
+      )}
+
       <h1 className="text-white">Tarefas de {materia.nome}</h1>
       <CardTarefasMateria
         materia={materia}
@@ -80,6 +92,7 @@ export default function TarefasMateria() {
           materia={materia}
           setAdicionandoTarefa={setAdicionandoTarefa}
           setAtualizarTarefas={setAtualizarTarefas}
+          setMensagemSucesso={setMensagemSucesso}
         />
       )}
     </main>
