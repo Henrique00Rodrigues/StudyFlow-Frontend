@@ -1,40 +1,71 @@
 import { useState } from "react";
 
-export default function CardAdicionarTarefa({ materia, setAdicionandoTarefa }) {
-  //Estou recebendo o props "materia", pois Isso será importante quando você criar o objeto com POO. Quando for fazer as associações de objetos. Assim a nova tarefa fica associada à matéria atual.
+import { criarTarefa } from "../../services/tarefaService";
+
+export default function CardAdicionarTarefa({
+  materia,
+  setAdicionandoTarefa,
+  setAtualizarTarefas,
+}) {
   const [dadosTarefa, setDadosTarefa] = useState({
     titulo: "",
     descricao: "",
     prioridade: "",
-    dataCriacao: "",
     dataEntrega: "",
   });
-  function AdicionarTarefa() {
+
+  const [erro, setErro] = useState("");
+
+  async function AdicionarTarefa() {
     if (
       dadosTarefa.titulo.trim() === "" ||
       dadosTarefa.descricao.trim() === "" ||
       dadosTarefa.prioridade.trim() === "" ||
-      dadosTarefa.dataCriacao === "" ||
       dadosTarefa.dataEntrega === ""
     ) {
-      alert("Alguma informação está faltando");
-    } else if (
-      dadosTarefa.prioridade.trim().toLowerCase() !== "alta" &&
-      dadosTarefa.prioridade.trim().toLowerCase() !== "média" &&
-      dadosTarefa.prioridade.trim().toLowerCase() !== "baixa"
+      setErro(
+        "Alguma informação está faltando.  (O frontend impediu o envio de uma requisição desnecessária ao servidor backend.)",
+      );
+      return;
+    }
+
+    const prioridadeDigitada = dadosTarefa.prioridade.trim().toLowerCase();
+
+    const prioridadeTratada =
+      prioridadeDigitada === "média" ? "media" : prioridadeDigitada;
+
+    if (
+      prioridadeTratada !== "alta" &&
+      prioridadeTratada !== "media" &&
+      prioridadeTratada !== "baixa"
     ) {
-      alert("A prioriadade precisa ser: Alta/Média/Baixa");
-    } else {
+      setErro("A prioridade precisa ser: Alta, Média ou Baixa.");
+      return;
+    }
+
+    try {
+      setErro("");
+
       const tarefaTratada = {
-        //Essa váriavel evita que um input seja salvo sem padronização. Ex: titulo: "    Hey  ", prioridade: "   ALta", etc
-        ...dadosTarefa,
         titulo: dadosTarefa.titulo.trim(),
         descricao: dadosTarefa.descricao.trim(),
-        prioridade: dadosTarefa.prioridade.trim().toLowerCase(),
+        prioridade: prioridadeTratada,
+        dataEntrega: dadosTarefa.dataEntrega,
       };
 
-      alert(`Adicionando tarefa: ${JSON.stringify(tarefaTratada)}`);
-      setAdicionandoTarefa(false); //Fecha o card se estiver tudo correto.
+      await criarTarefa(
+        tarefaTratada.titulo,
+        tarefaTratada.descricao,
+        tarefaTratada.prioridade,
+        tarefaTratada.dataEntrega,
+        materia.id,
+      );
+
+      setAtualizarTarefas((valorAtual) => valorAtual + 1);
+
+      setAdicionandoTarefa(false);
+    } catch (error) {
+      setErro(error.message);
     }
   }
   return (
@@ -89,20 +120,6 @@ export default function CardAdicionarTarefa({ materia, setAdicionandoTarefa }) {
         }
       />
 
-      <h5 className="text-warning mt-4">Data Criação:</h5>
-
-      <input
-        className="form-control"
-        type="date"
-        value={dadosTarefa.dataCriacao}
-        onChange={(ev) =>
-          setDadosTarefa({
-            ...dadosTarefa,
-            dataCriacao: ev.target.value,
-          })
-        }
-      />
-
       <h5 className="text-warning mt-4">Data Entrega:</h5>
 
       <input
@@ -116,6 +133,12 @@ export default function CardAdicionarTarefa({ materia, setAdicionandoTarefa }) {
           })
         }
       />
+
+      {erro && (
+        <div className="alert alert-danger mt-3" role="alert">
+          {erro}
+        </div>
+      )}
 
       <div className="mt-4">
         <button
