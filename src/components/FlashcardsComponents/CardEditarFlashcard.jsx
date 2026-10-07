@@ -68,6 +68,9 @@ export default function CardEditarFlashcards({
         <BotaoRemoverFlashcard
           flashcardSelecionado={flashcardSelecionado}
           setFlashcardSelecionado={setFlashcardSelecionado}
+          setAtualizarFlashcards={setAtualizarFlashcards}
+          setMensagemSucesso={setMensagemSucesso}
+          setErro={setErro}
         />
       </div>
 

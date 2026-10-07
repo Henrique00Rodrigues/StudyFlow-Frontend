@@ -65,3 +65,16 @@ export async function atualizarFlashcard(id, frente, verso) {
 
   return data.flashcard;
 }
+
+export async function removerFlashcard(id) {
+  const response = await fetch(`${API_URL}/flashcards/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+
+    throw new Error(data.mensagem || "Erro ao remover flashcard.");
+  }
+}

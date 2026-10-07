@@ -1,19 +1,37 @@
+import { removerFlashcard } from "../../services/flashcardService";
+
 export default function BotaoRemoverFlashcard({
   flashcardSelecionado,
   setFlashcardSelecionado,
+  setAtualizarFlashcards,
+  setMensagemSucesso,
+  setErro,
 }) {
-  function RemoverFlashcard() {
-    if (
-      confirm(
-        `Deseja remover este flashcard? ${JSON.stringify(
-          flashcardSelecionado,
-        )}`,
-      )
-    ) {
-      alert(`Removendo flashcard: ${JSON.stringify(flashcardSelecionado)}`);
+  async function RemoverFlashcard() {
+    const confirmacao = window.confirm(
+      `Deseja remover este flashcard? ${JSON.stringify(flashcardSelecionado)}`,
+    );
+
+    if (!confirmacao) {
+      return;
+    }
+
+    try {
+      setErro("");
+
+      await removerFlashcard(flashcardSelecionado.id);
+
+      setMensagemSucesso("Flashcard removido com sucesso.");
+
+      setTimeout(() => {
+        setMensagemSucesso("");
+      }, 3000);
+
+      setAtualizarFlashcards((valorAtual) => valorAtual + 1);
+
       setFlashcardSelecionado(null);
-    } else {
-      alert("Foi recusado.");
+    } catch (error) {
+      setErro(error.message);
     }
   }
 
