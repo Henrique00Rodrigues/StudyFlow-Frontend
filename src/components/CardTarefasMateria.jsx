@@ -4,7 +4,12 @@ import CardEditarTarefasMateria from "./TarefasComponents/CardEditarTarefasMater
 
 import { listarTarefasMateria } from "../services/tarefaService";
 
-export default function CardTarefasMateria({ materia, atualizarTarefas }) {
+export default function CardTarefasMateria({
+  materia,
+  atualizarTarefas,
+  setAtualizarTarefas,
+  setMensagemSucesso,
+}) {
   const [tarefas, setTarefas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -93,6 +98,8 @@ export default function CardTarefasMateria({ materia, atualizarTarefas }) {
         <CardEditarTarefasMateria
           tarefaSelecionada={tarefaSelecionada}
           setTarefaSelecionada={setTarefaSelecionada}
+          setAtualizarTarefas={setAtualizarTarefas}
+          setMensagemSucesso={setMensagemSucesso}
         />
       )}
     </>

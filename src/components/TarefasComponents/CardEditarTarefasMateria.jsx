@@ -7,13 +7,20 @@ import BotaoRemover from "./BotaoRemover";
 export default function CardEditarTarefasMateria({
   tarefaSelecionada,
   setTarefaSelecionada,
+  setAtualizarTarefas,
+  setMensagemSucesso,
 }) {
   const [campoEditando, setCampoEditando] = useState(null); //vai passar o campo que será  editado (ex, "título", "descrição", etc)
 
   const [tarefaModificada, setTarefaModificada] = useState({
     //É a cópia temporária da tarefa original (tarefaSelecionada), usada enquanto o usuário está editando.
     ...tarefaSelecionada,
+
+    // O input type="date" exige o formato YYYY-MM-DD.
+    dataEntrega: tarefaSelecionada.dataEntrega.slice(0, 10),
   });
+
+  const [erro, setErro] = useState("");
 
   return (
     <div
@@ -89,27 +96,6 @@ export default function CardEditarTarefasMateria({
         />
       </div>
 
-      <h5 className="text-warning mt-4">Data Criação:</h5>
-      <div className="d-flex align-items-center gap-2">
-        <input
-          className="form-control"
-          type="date"
-          disabled={campoEditando !== "dataCriacao"}
-          value={tarefaModificada.dataCriacao}
-          onChange={(ev) =>
-            setTarefaModificada({
-              ...tarefaModificada,
-              dataCriacao: ev.target.value,
-            })
-          }
-        />
-        <BotaoEditar
-          campo={"dataCriacao"}
-          campoEditando={campoEditando}
-          setCampoEditando={setCampoEditando}
-        />
-      </div>
-
       <h5 className="text-warning mt-4">Data Entrega:</h5>
       <div className="d-flex align-items-center gap-2">
         <input
@@ -131,11 +117,20 @@ export default function CardEditarTarefasMateria({
         />
       </div>
 
+      {erro && (
+        <div className="alert alert-danger mt-3" role="alert">
+          {erro}
+        </div>
+      )}
+
       <div className="d-flex justify-content-between align-items-center mt-4">
         <div className="d-flex gap-2">
           <BotaoSalvar
             tarefaModificada={tarefaModificada}
             setTarefaSelecionada={setTarefaSelecionada}
+            setAtualizarTarefas={setAtualizarTarefas}
+            setMensagemSucesso={setMensagemSucesso}
+            setErro={setErro}
           />
           <BotaoRemover
             tarefaSelecionada={tarefaSelecionada}

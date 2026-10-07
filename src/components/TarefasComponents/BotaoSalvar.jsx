@@ -1,39 +1,72 @@
+import { atualizarTarefa } from "../../services/tarefaService";
+
 export default function BotaoSalvar({
   tarefaModificada,
   setTarefaSelecionada,
+  setAtualizarTarefas,
+  setMensagemSucesso,
+  setErro,
 }) {
-  function SalvarTarefa() {
+  async function SalvarTarefa() {
     if (
       tarefaModificada.titulo.trim() === "" ||
       tarefaModificada.descricao.trim() === "" ||
       tarefaModificada.prioridade.trim() === "" ||
-      tarefaModificada.dataCriacao === "" ||
       tarefaModificada.dataEntrega === ""
     ) {
-      alert("Alguma informação está faltando");
-    } else if (
-      tarefaModificada.prioridade.trim().toLowerCase() !== "alta" &&
-      tarefaModificada.prioridade.trim().toLowerCase() !== "média" &&
-      tarefaModificada.prioridade.trim().toLowerCase() !== "baixa"
+      setErro(
+        "Alguma informação está faltando. (O frontend impediu o envio de uma requisição desnecessária ao servidor backend.)",
+      );
+      return;
+    }
+
+    const prioridadeDigitada = tarefaModificada.prioridade.trim().toLowerCase();
+
+    const prioridadeTratada =
+      prioridadeDigitada === "média" ? "media" : prioridadeDigitada;
+
+    if (
+      prioridadeTratada !== "alta" &&
+      prioridadeTratada !== "media" &&
+      prioridadeTratada !== "baixa"
     ) {
-      alert("A prioriadade precisa ser: Alta/Média/Baixa");
-    } else {
+      setErro("A prioridade precisa ser: Alta, Média ou Baixa.");
+      return;
+    }
+
+    try {
+      setErro("");
+
       const tarefaTratada = {
-        //Essa váriavel evita que um input seja salvo sem padronização. Ex: titulo: "    Hey  ", prioridade: "   ALta", etc
         ...tarefaModificada,
         titulo: tarefaModificada.titulo.trim(),
         descricao: tarefaModificada.descricao.trim(),
-        prioridade: tarefaModificada.prioridade.trim().toLowerCase(),
+        prioridade: prioridadeTratada,
       };
-      alert(`Salvando tarefa: ${JSON.stringify(tarefaTratada)}`);
 
-      // Futuramente:
-      // salvar tarefaTratada na lista ou no backend
-      //Vai ser uma função mais ou menos assim: atualizarTarefa(tarefaTratada)
+      await atualizarTarefa(
+        tarefaTratada.id,
+        tarefaTratada.titulo,
+        tarefaTratada.descricao,
+        tarefaTratada.prioridade,
+        tarefaTratada.concluida,
+        tarefaTratada.dataEntrega,
+      );
 
-      setTarefaSelecionada(null); //Fecha o card de edição de tarefa
+      setMensagemSucesso("Alteração realizada.");
+
+      setTimeout(() => {
+        setMensagemSucesso("");
+      }, 3000);
+
+      setAtualizarTarefas((valorAtual) => valorAtual + 1);
+
+      setTarefaSelecionada(null);
+    } catch (error) {
+      setErro(error.message);
     }
   }
+
   return (
     <button className="btn btn-primary fw-semibold px-4" onClick={SalvarTarefa}>
       Salvar

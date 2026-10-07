@@ -48,3 +48,38 @@ export async function criarTarefa(
 
   return data.tarefa;
 }
+
+export async function atualizarTarefa(
+  id,
+  titulo,
+  descricao,
+  prioridade,
+  concluida,
+  dataEntrega,
+) {
+  const response = await fetch(`${API_URL}/tarefas/${id}`, {
+    method: "PATCH",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    credentials: "include",
+
+    body: JSON.stringify({
+      titulo,
+      descricao,
+      prioridade,
+      concluida,
+      dataEntrega,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.mensagem || "Erro ao atualizar tarefa.");
+  }
+
+  return data.tarefa;
+}

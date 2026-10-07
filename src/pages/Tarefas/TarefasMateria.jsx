@@ -78,6 +78,8 @@ export default function TarefasMateria() {
       <CardTarefasMateria
         materia={materia}
         atualizarTarefas={atualizarTarefas}
+        setAtualizarTarefas={setAtualizarTarefas}
+        setMensagemSucesso={setMensagemSucesso}
       />
       <button
         type="button"
