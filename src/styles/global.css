@@ -29,3 +29,18 @@ body {
   font-style: italic;
   font-size: large;
 }
+
+.mensagem-sucesso {
+  animation: desaparecerMensagem 3s ease forwards;
+}
+
+@keyframes desaparecerMensagem {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

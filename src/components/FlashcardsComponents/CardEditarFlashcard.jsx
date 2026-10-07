@@ -6,6 +6,7 @@ export default function CardEditarFlashcards({
   flashcardSelecionado,
   setFlashcardSelecionado,
   setAtualizarFlashcards,
+  setMensagemSucesso,
 }) {
   const [flashcardModificado, setFlashcardModificado] = useState({
     ...flashcardSelecionado,
@@ -62,6 +63,7 @@ export default function CardEditarFlashcards({
           setFlashcardSelecionado={setFlashcardSelecionado}
           setAtualizarFlashcards={setAtualizarFlashcards}
           setErro={setErro}
+          setMensagemSucesso={setMensagemSucesso}
         />
         <BotaoRemoverFlashcard
           flashcardSelecionado={flashcardSelecionado}

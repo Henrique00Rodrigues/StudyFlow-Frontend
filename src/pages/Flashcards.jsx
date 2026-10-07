@@ -15,6 +15,8 @@ export default function Flashcards() {
 
   const [adicionandoFlashcard, setAdicionandoFlashcard] = useState(false);
 
+  const [mensagemSucesso, setMensagemSucesso] = useState("");
+
   // Contador usado como sinal para recarregar a lista de flashcards após alguma alteração, evitando, dessa forma, uma atualização manual com F5.
   const [atualizarFlashcards, setAtualizarFlashcards] = useState(0);
 
@@ -62,11 +64,22 @@ export default function Flashcards() {
 
   return (
     <main className="d-flex flex-column align-items-center">
+      {mensagemSucesso && (
+        <div
+          className="alert alert-success bg-success position-fixed top-0 start-50 fw-semibold translate-middle-x mt-3 mensagem-sucesso"
+          style={{ zIndex: 2000 }}
+          role="alert"
+        >
+          {mensagemSucesso}
+        </div>
+      )}
+
       <h1 className="text-white">Flashcards de {materia.nome}</h1>
       <FlashcardComponent
         materia={materia}
         atualizarFlashcards={atualizarFlashcards}
         setAtualizarFlashcards={setAtualizarFlashcards}
+        setMensagemSucesso={setMensagemSucesso}
       />
       <button
         type="button"
@@ -81,6 +94,7 @@ export default function Flashcards() {
           materia={materia}
           setAdicionandoFlashcard={setAdicionandoFlashcard}
           setAtualizarFlashcards={setAtualizarFlashcards}
+          setMensagemSucesso={setMensagemSucesso}
         />
       )}
     </main>

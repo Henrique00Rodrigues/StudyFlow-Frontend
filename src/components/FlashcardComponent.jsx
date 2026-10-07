@@ -9,6 +9,7 @@ export default function FlashcardComponent({
   materia,
   atualizarFlashcards,
   setAtualizarFlashcards,
+  setMensagemSucesso,
 }) {
   const [flashcards, setFlashcards] = useState([]);
   const [carregando, setCarregando] = useState(true);
@@ -117,6 +118,7 @@ export default function FlashcardComponent({
           flashcardSelecionado={flashcardSelecionado}
           setFlashcardSelecionado={setFlashcardSelecionado}
           setAtualizarFlashcards={setAtualizarFlashcards}
+          setMensagemSucesso={setMensagemSucesso}
         />
       )}
     </>

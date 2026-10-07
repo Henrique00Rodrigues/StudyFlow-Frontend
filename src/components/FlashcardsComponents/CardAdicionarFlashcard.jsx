@@ -6,6 +6,7 @@ export default function CardAdicionarFlashcard({
   materia,
   setAdicionandoFlashcard,
   setAtualizarFlashcards,
+  setMensagemSucesso,
 }) {
   const [dadosFlashcard, setDadosFlashcard] = useState({
     frente: "",
@@ -40,6 +41,12 @@ export default function CardAdicionarFlashcard({
         flashcardTratado.verso,
         materia.id,
       );
+
+      setMensagemSucesso("Flashcard criado com sucesso");
+
+      setTimeout(() => {
+        setMensagemSucesso("");
+      }, 3000);
 
       setAtualizarFlashcards((valorAtual) => valorAtual + 1);
 

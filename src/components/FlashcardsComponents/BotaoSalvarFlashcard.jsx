@@ -5,6 +5,7 @@ export default function BotaoSalvarFlashcard({
   setFlashcardSelecionado,
   setAtualizarFlashcards,
   setErro,
+  setMensagemSucesso,
 }) {
   async function SalvarAlteracao() {
     if (
@@ -31,6 +32,12 @@ export default function BotaoSalvarFlashcard({
         flashcardTratado.frente,
         flashcardTratado.verso,
       );
+
+      setMensagemSucesso("Alteração realizada.");
+
+      setTimeout(() => {
+        setMensagemSucesso("");
+      }, 3000);
 
       setAtualizarFlashcards((valorAtual) => valorAtual + 1);
 
