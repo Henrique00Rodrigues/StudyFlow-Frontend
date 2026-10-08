@@ -1,9 +1,14 @@
-import { NavLink, useOutletContext, useParams } from "react-router-dom";
+import {
+  NavLink,
+  useOutletContext,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import CardEditarMateria from "../components/MateriaComponents/CardEditarMateria";
 
-import { buscarMateriaPorId } from "../services/materiaService";
+import { buscarMateriaPorId, removerMateria } from "../services/materiaService";
 
 export default function Materia() {
   const { materiaId } = useParams();
@@ -18,6 +23,8 @@ export default function Materia() {
   const [mensagemSucesso, setMensagemSucesso] = useState("");
 
   const { setAtualizarMaterias } = useOutletContext();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function carregarMateria() {
@@ -59,6 +66,28 @@ export default function Materia() {
         <h1 className="text-danger">Matéria não encontrada...</h1>
       </div>
     );
+  }
+
+  async function RemoverMateria() {
+    const confirmacao = window.confirm(
+      `Tem certeza que deseja remover a matéria "${materia.nome}"? As tarefas e flashcards associados também serão removidos permanentemente.`,
+    );
+
+    if (!confirmacao) {
+      return;
+    }
+
+    try {
+      setErro("");
+
+      await removerMateria(materia.id);
+
+      setAtualizarMaterias((valorAtual) => valorAtual + 1);
+
+      navigate("/");
+    } catch (error) {
+      setErro(error.message);
+    }
   }
 
   return (
@@ -106,7 +135,14 @@ export default function Materia() {
             </li>
 
             <li>
-              <button type="button" className="dropdown-item text-danger">
+              <button
+                type="button"
+                className="dropdown-item text-danger"
+                onClick={() => {
+                  RemoverMateria();
+                  setConfiguracoesAberta(false);
+                }}
+              >
                 Remover matéria
               </button>
             </li>

@@ -71,3 +71,16 @@ export async function atualizarMateria(id, nome) {
 
   return data.materia;
 }
+
+export async function removerMateria(id) {
+  const response = await fetch(`${API_URL}/materias/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+
+    throw new Error(data.mensagem || "Erro ao remover matéria.");
+  }
+}
