@@ -50,3 +50,24 @@ export async function criarMateria(nome) {
 
   return data.materia;
 }
+
+export async function atualizarMateria(id, nome) {
+  const response = await fetch(`${API_URL}/materias/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      nome,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.mensagem || "Erro ao atualizar matéria.");
+  }
+
+  return data.materia;
+}

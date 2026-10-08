@@ -1,5 +1,7 @@
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useOutletContext, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import CardEditarMateria from "../components/MateriaComponents/CardEditarMateria";
 
 import { buscarMateriaPorId } from "../services/materiaService";
 
@@ -11,6 +13,11 @@ export default function Materia() {
   const [erro, setErro] = useState("");
 
   const [configuracoesAberta, setConfiguracoesAberta] = useState(false);
+  const [editandoMateria, setEditandoMateria] = useState(false);
+
+  const [mensagemSucesso, setMensagemSucesso] = useState("");
+
+  const { setAtualizarMaterias } = useOutletContext();
 
   useEffect(() => {
     async function carregarMateria() {
@@ -56,6 +63,16 @@ export default function Materia() {
 
   return (
     <main className="d-flex flex-column vh-100 position-relative">
+      {mensagemSucesso && (
+        <div
+          className="alert alert-success bg-success position-fixed top-0 start-50 fw-semibold translate-middle-x mt-3 mensagem-sucesso"
+          style={{ zIndex: 2000 }}
+          role="alert"
+        >
+          {mensagemSucesso}
+        </div>
+      )}
+
       <div className="d-flex justify-content-center mt-2">
         <div className="bg-warning w-auto d-inline-block p-2 rounded">
           <h1 className="text-black mt-0">{materia.nome}</h1>
@@ -76,8 +93,15 @@ export default function Materia() {
         {configuracoesAberta && (
           <ul className="dropdown-menu dropdown-menu-end show">
             <li>
-              <button type="button" className="dropdown-item">
-                Editar matéria
+              <button
+                type="button"
+                className="dropdown-item"
+                onClick={() => {
+                  setEditandoMateria(true);
+                  setConfiguracoesAberta(false);
+                }}
+              >
+                Editar nome da matéria
               </button>
             </li>
 
@@ -104,6 +128,16 @@ export default function Materia() {
           Tarefas de {materia.nome}
         </NavLink>
       </div>
+
+      {editandoMateria && (
+        <CardEditarMateria
+          materia={materia}
+          setMateria={setMateria}
+          setEditandoMateria={setEditandoMateria}
+          setAtualizarMaterias={setAtualizarMaterias}
+          setMensagemSucesso={setMensagemSucesso}
+        />
+      )}
     </main>
   );
 }
