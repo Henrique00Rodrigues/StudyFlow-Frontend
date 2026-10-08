@@ -3,10 +3,21 @@ export default function CardTarefasGlobais({ tarefas }) {
     <div className="d-flex flex-column align-items-center w-100">
       {tarefas.length > 0 ? (
         tarefas.map((tarefa) => {
+          const nomeMateriaLimitado =
+            tarefa.materia.nome.length > 20
+              ? `${tarefa.materia.nome.slice(0, 20)}...`
+              : tarefa.materia.nome;
+
+          const tituloLimitado =
+            tarefa.titulo.length > 40
+              ? `${tarefa.titulo.slice(0, 40)}...`
+              : tarefa.titulo;
+
           const textoLimitado =
-            tarefa.descricao.length > 300
-              ? `${tarefa.descricao.slice(0, 300)}...`
+            tarefa.descricao.length > 260
+              ? `${tarefa.descricao.slice(0, 260)}...`
               : tarefa.descricao;
+
           return (
             <div
               key={tarefa.id}
@@ -14,9 +25,22 @@ export default function CardTarefasGlobais({ tarefas }) {
               style={{
                 width: "90%",
                 height: "100px",
+                overflow: "hidden",
               }}
             >
-              <div className="fw-semibold">{tarefa.titulo}</div>
+              <div
+                className="fw-semibold"
+                style={{
+                  maxWidth: "95%",
+                  overflowWrap: "anywhere",
+                  wordBreak: "break-word",
+                }}
+              >
+                {tituloLimitado}
+              </div>
+              <div className="text-secondary fw-semibold">
+                Matéria: {nomeMateriaLimitado}
+              </div>
               <hr
                 className="border-dark border my-0 opacity-100 rounded"
                 style={{
@@ -27,6 +51,8 @@ export default function CardTarefasGlobais({ tarefas }) {
                 className="fw-semibold"
                 style={{
                   width: "95%",
+                  overflowWrap: "anywhere",
+                  wordBreak: "break-word",
                 }}
               >
                 {textoLimitado}
