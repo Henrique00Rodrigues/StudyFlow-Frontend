@@ -84,7 +84,11 @@ export default function Materia() {
 
       setAtualizarMaterias((valorAtual) => valorAtual + 1);
 
-      navigate("/");
+      navigate("/", {
+        state: {
+          mensagemSucesso: "Matéria removida com sucesso.",
+        },
+      });
     } catch (error) {
       setErro(error.message);
     }
