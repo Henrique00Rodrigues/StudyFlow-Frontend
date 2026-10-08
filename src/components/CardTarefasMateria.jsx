@@ -51,9 +51,14 @@ export default function CardTarefasMateria({
       <div className="d-flex flex-column align-items-center w-100">
         {tarefas.length > 0 ? (
           tarefas.map((tarefa) => {
+            const tituloLimitado =
+              tarefa.titulo.length > 40
+                ? `${tarefa.titulo.slice(0, 40)}...`
+                : tarefa.titulo;
+
             const textoLimitado =
-              tarefa.descricao.length > 300
-                ? `${tarefa.descricao.slice(0, 300)}...`
+              tarefa.descricao.length > 360
+                ? `${tarefa.descricao.slice(0, 360)}...`
                 : tarefa.descricao;
 
             return (
@@ -62,12 +67,22 @@ export default function CardTarefasMateria({
                 className="d-flex flex-column align-items-center bg-warning rounded mt-4"
                 style={{
                   width: "90%",
-                  minHeight: "100px",
+                  height: "100px",
+                  overflow: "hidden",
                   cursor: "pointer",
                 }}
                 onClick={() => setTarefaSelecionada(tarefa)}
               >
-                <div className="fw-semibold">{tarefa.titulo}</div>
+                <div
+                  className="fw-semibold"
+                  style={{
+                    maxWidth: "95%",
+                    overflowWrap: "anywhere",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {tituloLimitado}
+                </div>
 
                 <hr
                   className="border-dark border my-0 opacity-100 rounded"
@@ -79,7 +94,9 @@ export default function CardTarefasMateria({
                 <div
                   className="fw-semibold"
                   style={{
-                    width: "95%",
+                    maxWidth: "95%",
+                    overflowWrap: "anywhere",
+                    wordBreak: "break-word",
                   }}
                 >
                   {textoLimitado}
