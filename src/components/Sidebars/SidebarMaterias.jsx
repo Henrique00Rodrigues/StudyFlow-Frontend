@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { listarMaterias } from "../../services/materiaService";
 import fecharSidebar from "../../utils/OffcanvasFunctions";
 
-export default function SidebarMaterias() {
+export default function SidebarMaterias({ atualizarMaterias }) {
   const [materias, setMaterias] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -25,7 +25,7 @@ export default function SidebarMaterias() {
     }
 
     carregarMaterias();
-  }, []);
+  }, [atualizarMaterias]);
 
   return (
     <div

@@ -1,8 +1,13 @@
 import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
+
 import CardAdicionarMateria from "../components/MateriaComponents/CardAdicionarMateria";
 
 export default function Dashboard() {
   const [adicionandoMateria, setAdicionandoMateria] = useState(false);
+
+  const { setAtualizarMaterias } = useOutletContext();
+
   return (
     <main className="page">
       <div className="d-flex flex-column">
@@ -35,7 +40,10 @@ export default function Dashboard() {
       </button>
 
       {adicionandoMateria && (
-        <CardAdicionarMateria setAdicionandoMateria={setAdicionandoMateria} />
+        <CardAdicionarMateria
+          setAdicionandoMateria={setAdicionandoMateria}
+          setAtualizarMaterias={setAtualizarMaterias}
+        />
       )}
     </main>
   );
