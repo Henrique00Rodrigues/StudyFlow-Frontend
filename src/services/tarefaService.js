@@ -83,3 +83,16 @@ export async function atualizarTarefa(
 
   return data.tarefa;
 }
+
+export async function removerTarefa(id) {
+  const response = await fetch(`${API_URL}/tarefas/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+
+    throw new Error(data.mensagem || "Erro ao remover tarefa.");
+  }
+}

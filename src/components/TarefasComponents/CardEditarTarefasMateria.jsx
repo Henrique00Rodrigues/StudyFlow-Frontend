@@ -135,6 +135,9 @@ export default function CardEditarTarefasMateria({
           <BotaoRemover
             tarefaSelecionada={tarefaSelecionada}
             setTarefaSelecionada={setTarefaSelecionada}
+            setAtualizarTarefas={setAtualizarTarefas}
+            setMensagemSucesso={setMensagemSucesso}
+            setErro={setErro}
           />
         </div>
         <div className="d-flex align-items-center gap-3">

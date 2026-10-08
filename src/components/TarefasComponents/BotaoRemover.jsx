@@ -1,17 +1,37 @@
+import { removerTarefa } from "../../services/tarefaService";
+
 export default function BotaoRemover({
   tarefaSelecionada,
   setTarefaSelecionada,
+  setAtualizarTarefas,
+  setMensagemSucesso,
+  setErro,
 }) {
-  function RemoverTarefa() {
-    if (
-      confirm(
-        `Tem certeza que deseja remover essa tarefa? ${JSON.stringify(tarefaSelecionada)}`,
-      )
-    ) {
-      alert(`Removendo tarefa: ${JSON.stringify(tarefaSelecionada)}`);
-      setTarefaSelecionada(null); //Fecha o card de edição de tarefa
-    } else {
-      alert("Foi recusado.");
+  async function RemoverTarefa() {
+    const confirmacao = window.confirm(
+      `Tem certeza que deseja remover a tarefa "${tarefaSelecionada.titulo}"?`,
+    );
+
+    if (!confirmacao) {
+      return;
+    }
+
+    try {
+      setErro("");
+
+      await removerTarefa(tarefaSelecionada.id);
+
+      setMensagemSucesso("Tarefa removida com sucesso.");
+
+      setTimeout(() => {
+        setMensagemSucesso("");
+      }, 3000);
+
+      setAtualizarTarefas((valorAtual) => valorAtual + 1);
+
+      setTarefaSelecionada(null);
+    } catch (error) {
+      setErro(error.message);
     }
   }
 
