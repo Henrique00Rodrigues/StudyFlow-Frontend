@@ -10,6 +10,8 @@ export default function Materia() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
+  const [configuracoesAberta, setConfiguracoesAberta] = useState(false);
+
   useEffect(() => {
     async function carregarMateria() {
       try {
@@ -53,12 +55,41 @@ export default function Materia() {
   }
 
   return (
-    <main className="d-flex flex-column vh-100">
+    <main className="d-flex flex-column vh-100 position-relative">
       <div className="d-flex justify-content-center mt-2">
         <div className="bg-warning w-auto d-inline-block p-2 rounded">
           <h1 className="text-black mt-0">{materia.nome}</h1>
         </div>
       </div>
+
+      <div className="dropdown position-absolute top-0 end-0 m-3">
+        <button
+          type="button"
+          className="btn btn-secondary fs-5 fw-semibold text-dark"
+          aria-expanded={configuracoesAberta}
+          aria-label="Configurações da matéria"
+          onClick={() => setConfiguracoesAberta(!configuracoesAberta)}
+        >
+          Configurações ⚙️
+        </button>
+
+        {configuracoesAberta && (
+          <ul className="dropdown-menu dropdown-menu-end show">
+            <li>
+              <button type="button" className="dropdown-item">
+                Editar matéria
+              </button>
+            </li>
+
+            <li>
+              <button type="button" className="dropdown-item text-danger">
+                Remover matéria
+              </button>
+            </li>
+          </ul>
+        )}
+      </div>
+
       <div className="d-flex justify-content-around align-items-center flex-grow-1">
         <NavLink
           className="btn btn-primary px-5 py-4 fs-4 text-white fw-semibold border-black border-2"
