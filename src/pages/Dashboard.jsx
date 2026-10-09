@@ -5,6 +5,7 @@ import CardAdicionarMateria from "../components/MateriaComponents/CardAdicionarM
 
 import { listarTarefas } from "../services/tarefaService";
 import { listarFlashcards } from "../services/flashcardService";
+import { buscarDadosUsuario } from "../services/usuarioService";
 
 export default function Dashboard() {
   const [tarefasPendentes, setTarefasPendentes] = useState(0);
@@ -14,6 +15,8 @@ export default function Dashboard() {
   const [flashcardsRevisadosHoje, setFlashcardsRevisadosHoje] = useState(0);
 
   const [adicionandoMateria, setAdicionandoMateria] = useState(false);
+
+  const [apelidoUsuario, setApelidoUsuario] = useState("");
 
   const { setAtualizarMaterias } = useOutletContext();
 
@@ -129,8 +132,30 @@ export default function Dashboard() {
     carregarEstatisticasFlashcards();
   }, []);
 
+  // Busca os dados do usuário autenticado
+  // para exibir seu apelido no Dashboard.
+  useEffect(() => {
+    async function carregarDadosUsuario() {
+      try {
+        const usuario = await buscarDadosUsuario();
+
+        setApelidoUsuario(usuario.apelido);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    carregarDadosUsuario();
+  }, []);
+
   return (
     <main className="page">
+      {apelidoUsuario && (
+        <div className="position-fixed top-0 start-50 translate-middle-x mt-3 text-white fw-semibold fs-2">
+          Bem-vindo, {apelidoUsuario}
+        </div>
+      )}
+
       {mensagemSucesso && (
         <div
           className="alert alert-success bg-success position-fixed top-0 start-50 fw-semibold translate-middle-x mt-3 mensagem-sucesso"
@@ -178,6 +203,7 @@ export default function Dashboard() {
         <CardAdicionarMateria
           setAdicionandoMateria={setAdicionandoMateria}
           setAtualizarMaterias={setAtualizarMaterias}
+          setMensagemSucesso={setMensagemSucesso}
         />
       )}
     </main>

@@ -5,6 +5,7 @@ import { criarMateria } from "../../services/materiaService";
 export default function CardAdicionarMateria({
   setAdicionandoMateria,
   setAtualizarMaterias,
+  setMensagemSucesso,
 }) {
   const [dadosMateria, setDadosMateria] = useState({
     nome: "",
@@ -31,6 +32,8 @@ export default function CardAdicionarMateria({
       await criarMateria(materiaTratada.nome);
 
       setAtualizarMaterias((valorAtual) => valorAtual + 1);
+
+      setMensagemSucesso("Matéria criada com sucesso.");
 
       setAdicionandoMateria(false);
     } catch (error) {
