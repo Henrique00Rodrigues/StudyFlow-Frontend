@@ -1,7 +1,8 @@
 import { useState } from "react";
+
 import CardLogOut from "./CardLogOut";
 
-export default function CardPerfil({ setPerfilAberto }) {
+export default function CardPerfil({ setPerfilAberto, handleLogout }) {
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
   const [fotoPerfil, setFotoPerfil] = useState(null);
 
@@ -95,6 +96,7 @@ export default function CardPerfil({ setPerfilAberto }) {
         <CardLogOut
           setConfirmandoLogout={setConfirmandoLogout}
           setPerfilAberto={setPerfilAberto}
+          handleLogout={handleLogout}
         />
       )}
     </>

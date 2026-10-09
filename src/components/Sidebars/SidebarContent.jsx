@@ -87,7 +87,12 @@ export default function SidebarContent({ hideTitle = false }) {
         />
       )}
 
-      {perfilAberto && <CardPerfil setPerfilAberto={setPerfilAberto} />}
+      {perfilAberto && (
+        <CardPerfil
+          setPerfilAberto={setPerfilAberto}
+          handleLogout={handleLogout}
+        />
+      )}
     </>
   );
 }
