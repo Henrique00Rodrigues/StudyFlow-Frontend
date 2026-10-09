@@ -3,7 +3,16 @@ import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 import CardAdicionarMateria from "../components/MateriaComponents/CardAdicionarMateria";
 
+import { listarTarefas } from "../services/tarefaService";
+import { listarFlashcards } from "../services/flashcardService";
+
 export default function Dashboard() {
+  const [tarefasPendentes, setTarefasPendentes] = useState(0);
+  const [tarefasConcluidas, setTarefasConcluidas] = useState(0);
+
+  const [flashcardsPendentes, setFlashcardsPendentes] = useState(0);
+  const [flashcardsRevisadosHoje, setFlashcardsRevisadosHoje] = useState(0);
+
   const [adicionandoMateria, setAdicionandoMateria] = useState(false);
 
   const { setAtualizarMaterias } = useOutletContext();
@@ -56,6 +65,70 @@ export default function Dashboard() {
     return () => clearTimeout(timeout);
   }, [mensagemSucesso]);
 
+  // Busca todas as tarefas do usuário e calcula
+  // a quantidade de tarefas pendentes e concluídas.
+  useEffect(() => {
+    async function carregarEstatisticasTarefas() {
+      try {
+        const tarefas = await listarTarefas();
+
+        const pendentes = tarefas.filter((tarefa) => !tarefa.concluida).length;
+
+        const concluidas = tarefas.filter((tarefa) => tarefa.concluida).length;
+
+        setTarefasPendentes(pendentes);
+        setTarefasConcluidas(concluidas);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    carregarEstatisticasTarefas();
+  }, []);
+
+  // Busca todos os flashcards do usuário e calcula
+  // quantos estão pendentes para revisão.
+  useEffect(() => {
+    async function carregarEstatisticasFlashcards() {
+      try {
+        const flashcards = await listarFlashcards();
+
+        const agora = new Date();
+
+        const pendentes = flashcards.filter((flashcard) => {
+          // Flashcard nunca revisado: já está disponível para revisão.
+          if (!flashcard.proximaRevisao) {
+            return true;
+          }
+
+          // Flashcard cuja próxima revisão já chegou ou passou.
+          return new Date(flashcard.proximaRevisao) <= agora;
+        }).length;
+
+        const revisadosHoje = flashcards.filter((flashcard) => {
+          if (!flashcard.dataUltimaRevisao) {
+            return false;
+          }
+
+          const dataUltimaRevisao = new Date(flashcard.dataUltimaRevisao);
+
+          return (
+            dataUltimaRevisao.getFullYear() === agora.getFullYear() &&
+            dataUltimaRevisao.getMonth() === agora.getMonth() &&
+            dataUltimaRevisao.getDate() === agora.getDate()
+          );
+        }).length;
+
+        setFlashcardsPendentes(pendentes);
+        setFlashcardsRevisadosHoje(revisadosHoje);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    carregarEstatisticasFlashcards();
+  }, []);
+
   return (
     <main className="page">
       {mensagemSucesso && (
@@ -77,17 +150,21 @@ export default function Dashboard() {
           </span>
         </div>
         <div className="text-primary ms-5 mt-3  fs-7 fw-semibold">
-          Tarefas pendentes:
+          Tarefas pendentes:{" "}
+          <span className="text-white">{tarefasPendentes}</span>
         </div>
 
         <div className="text-primary ms-5 mt-3  fs-7 fw-semibold">
-          Tarefas concluídas:
+          Tarefas concluídas:{" "}
+          <span className="text-white">{tarefasConcluidas}</span>
         </div>
         <div className="text-primary ms-5 mt-3  fs-7 fw-semibold">
-          Flashcards pendentes:
+          Flashcards pendentes:{" "}
+          <span className="text-white">{flashcardsPendentes}</span>
         </div>
         <div className="text-primary ms-5 mt-3  fs-7 fw-semibold">
-          Flashcards revisados hoje:
+          Flashcards revisados hoje:{" "}
+          <span className="text-white">{flashcardsRevisadosHoje}</span>
         </div>
       </div>
       <button
