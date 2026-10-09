@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CardLogOut from "./CardLogOut";
+
+import { buscarDadosUsuario } from "../services/usuarioService";
 
 export default function CardPerfil({ setPerfilAberto, handleLogout }) {
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
   const [fotoPerfil, setFotoPerfil] = useState(null);
 
-  const usuario = {
-    email: "usuario@email.com",
-    dataCriacao: "15/09/2026",
-  };
+  const [usuario, setUsuario] = useState(null);
 
   function SelecionarFoto(ev) {
     const arquivo = ev.target.files[0];
@@ -24,6 +23,20 @@ export default function CardPerfil({ setPerfilAberto, handleLogout }) {
     alert("Salvando...");
     setPerfilAberto(false);
   }
+
+  useEffect(() => {
+    async function carregarDadosUsuario() {
+      try {
+        const dadosUsuario = await buscarDadosUsuario();
+
+        setUsuario(dadosUsuario);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    carregarDadosUsuario();
+  }, []);
 
   return (
     <>
@@ -58,12 +71,18 @@ export default function CardPerfil({ setPerfilAberto, handleLogout }) {
 
           <div className="w-100">
             <p>
-              <span className="text-info">Email:</span> {usuario.email}
+              <span className="text-info">Apelido:</span> {usuario?.apelido}
+            </p>
+
+            <p>
+              <span className="text-info">Email:</span> {usuario?.email}
             </p>
 
             <p>
               <span className="text-info">Conta criada em:</span>{" "}
-              {usuario.dataCriacao}
+              {usuario?.dataCriacao
+                ? new Date(usuario.dataCriacao).toLocaleDateString("pt-BR")
+                : ""}
             </p>
           </div>
 
