@@ -9,6 +9,13 @@ export default function CardTarefasGlobais({ tarefasFiltradas }) {
     <div className="d-flex flex-column align-items-center w-100">
       {tarefasFiltradas.length > 0 ? (
         tarefasFiltradas.map((tarefa) => {
+          const prioridadeFormatada =
+            tarefa.prioridade === "alta"
+              ? "Alta"
+              : tarefa.prioridade === "media"
+                ? "Média"
+                : "Baixa";
+
           const [ano, mes, dia] = tarefa.dataEntrega.slice(0, 10).split("-");
 
           const dataEntregaFormatada = `${dia}/${mes}/${ano}`;
@@ -24,8 +31,8 @@ export default function CardTarefasGlobais({ tarefasFiltradas }) {
               : tarefa.titulo;
 
           const textoLimitado =
-            tarefa.descricao.length > 260
-              ? `${tarefa.descricao.slice(0, 260)}...`
+            tarefa.descricao.length > 100
+              ? `${tarefa.descricao.slice(0, 100)}...`
               : tarefa.descricao;
 
           const tarefaVencida =
@@ -56,10 +63,15 @@ export default function CardTarefasGlobais({ tarefasFiltradas }) {
               <div className="position-absolute top-0 end-0 me-4 mt-1 fw-semibold">
                 {dataEntregaFormatada}
               </div>
+
+              <div className="position-absolute top-0 start-0 ms-2 mt-1 fw-semibold">
+                Prioridade: {prioridadeFormatada}
+              </div>
+
               <div
                 className="fw-semibold"
                 style={{
-                  maxWidth: "48%",
+                  maxWidth: "40%",
                   overflowWrap: "anywhere",
                   wordBreak: "break-word",
                 }}

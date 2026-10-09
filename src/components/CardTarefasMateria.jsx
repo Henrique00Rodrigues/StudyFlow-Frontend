@@ -9,6 +9,7 @@ export default function CardTarefasMateria({
   atualizarTarefas,
   setAtualizarTarefas,
   setMensagemSucesso,
+  filtroSelecionado,
 }) {
   const [tarefas, setTarefas] = useState([]);
   const [carregando, setCarregando] = useState(true);
@@ -46,25 +47,67 @@ export default function CardTarefasMateria({
     );
   }
 
+  const hoje = new Date();
+
+  const dataHoje = `${hoje.getFullYear()}-${String(
+    hoje.getMonth() + 1,
+  ).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
+
+  const tarefasFiltradas = tarefas.filter((tarefa) => {
+    if (filtroSelecionado === "concluidas") {
+      return tarefa.concluida;
+    }
+
+    if (filtroSelecionado === "pendentes") {
+      return !tarefa.concluida;
+    }
+
+    if (filtroSelecionado === "vencidas") {
+      return !tarefa.concluida && tarefa.dataEntrega.slice(0, 10) < dataHoje;
+    }
+
+    return true;
+  });
+
   return (
     <>
       <div className="d-flex flex-column align-items-center w-100">
-        {tarefas.length > 0 ? (
-          tarefas.map((tarefa) => {
+        {tarefasFiltradas.length > 0 ? (
+          tarefasFiltradas.map((tarefa) => {
+            const prioridadeFormatada =
+              tarefa.prioridade === "alta"
+                ? "Alta"
+                : tarefa.prioridade === "media"
+                  ? "Média"
+                  : "Baixa";
+
+            const [ano, mes, dia] = tarefa.dataEntrega.slice(0, 10).split("-");
+
+            const dataEntregaFormatada = `${dia}/${mes}/${ano}`;
+
             const tituloLimitado =
               tarefa.titulo.length > 40
                 ? `${tarefa.titulo.slice(0, 40)}...`
                 : tarefa.titulo;
 
             const textoLimitado =
-              tarefa.descricao.length > 360
-                ? `${tarefa.descricao.slice(0, 360)}...`
+              tarefa.descricao.length > 200
+                ? `${tarefa.descricao.slice(0, 200)}...`
                 : tarefa.descricao;
+
+            const tarefaVencida =
+              !tarefa.concluida && tarefa.dataEntrega.slice(0, 10) < dataHoje;
+
+            const corCard = tarefa.concluida
+              ? "bg-success"
+              : tarefaVencida
+                ? "bg-danger"
+                : "bg-warning";
 
             return (
               <div
                 key={tarefa.id}
-                className="d-flex flex-column align-items-center bg-warning rounded mt-4"
+                className={`d-flex flex-column align-items-center position-relative ${corCard} rounded mt-4`}
                 style={{
                   width: "90%",
                   height: "100px",
@@ -73,10 +116,18 @@ export default function CardTarefasMateria({
                 }}
                 onClick={() => setTarefaSelecionada(tarefa)}
               >
+                <div className="position-absolute top-0 end-0 me-4 fw-semibold">
+                  {dataEntregaFormatada}
+                </div>
+
+                <div className="position-absolute top-0 start-0 ms-2 fw-semibold">
+                  Prioridade: {prioridadeFormatada}
+                </div>
+
                 <div
                   className="fw-semibold"
                   style={{
-                    maxWidth: "95%",
+                    maxWidth: "40%",
                     overflowWrap: "anywhere",
                     wordBreak: "break-word",
                   }}

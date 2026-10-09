@@ -20,6 +20,8 @@ export default function TarefasMateria() {
 
   const [adicionandoTarefa, setAdicionandoTarefa] = useState(false);
 
+  const [filtroSelecionado, setFiltroSelecionado] = useState("todas");
+
   useEffect(() => {
     async function carregarMateria() {
       try {
@@ -75,12 +77,65 @@ export default function TarefasMateria() {
       )}
 
       <h1 className="text-white">Tarefas de {materia.nome}</h1>
+
+      <div className="d-flex gap-3 mt-3">
+        <button
+          type="button"
+          className={`btn ${
+            filtroSelecionado === "todas"
+              ? "btn-primary"
+              : "btn-outline-primary"
+          }`}
+          onClick={() => setFiltroSelecionado("todas")}
+        >
+          Todas
+        </button>
+
+        <button
+          type="button"
+          className={`btn ${
+            filtroSelecionado === "concluidas"
+              ? "btn-primary"
+              : "btn-outline-primary"
+          }`}
+          onClick={() => setFiltroSelecionado("concluidas")}
+        >
+          Concluídas
+        </button>
+
+        <button
+          type="button"
+          className={`btn ${
+            filtroSelecionado === "pendentes"
+              ? "btn-primary"
+              : "btn-outline-primary"
+          }`}
+          onClick={() => setFiltroSelecionado("pendentes")}
+        >
+          Pendentes
+        </button>
+
+        <button
+          type="button"
+          className={`btn ${
+            filtroSelecionado === "vencidas"
+              ? "btn-primary"
+              : "btn-outline-primary"
+          }`}
+          onClick={() => setFiltroSelecionado("vencidas")}
+        >
+          Vencidas
+        </button>
+      </div>
+
       <CardTarefasMateria
         materia={materia}
         atualizarTarefas={atualizarTarefas}
         setAtualizarTarefas={setAtualizarTarefas}
         setMensagemSucesso={setMensagemSucesso}
+        filtroSelecionado={filtroSelecionado}
       />
+
       <button
         type="button"
         className="btn btn-primary fs-3 fw-semibold px-4 py-2 mb-4 position-fixed bottom-0 start-50 translate-middle-x rounded-5"
