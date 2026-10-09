@@ -1,8 +1,18 @@
-export default function CardTarefasGlobais({ tarefas }) {
+export default function CardTarefasGlobais({ tarefasFiltradas }) {
+  const hoje = new Date();
+
+  const dataHoje = `${hoje.getFullYear()}-${String(
+    hoje.getMonth() + 1,
+  ).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
+
   return (
     <div className="d-flex flex-column align-items-center w-100">
-      {tarefas.length > 0 ? (
-        tarefas.map((tarefa) => {
+      {tarefasFiltradas.length > 0 ? (
+        tarefasFiltradas.map((tarefa) => {
+          const [ano, mes, dia] = tarefa.dataEntrega.slice(0, 10).split("-");
+
+          const dataEntregaFormatada = `${dia}/${mes}/${ano}`;
+
           const nomeMateriaLimitado =
             tarefa.materia.nome.length > 20
               ? `${tarefa.materia.nome.slice(0, 20)}...`
@@ -18,27 +28,45 @@ export default function CardTarefasGlobais({ tarefas }) {
               ? `${tarefa.descricao.slice(0, 260)}...`
               : tarefa.descricao;
 
+          const tarefaVencida =
+            !tarefa.concluida && tarefa.dataEntrega.slice(0, 10) < dataHoje;
+
+          const corCard = tarefa.concluida
+            ? "bg-success"
+            : tarefaVencida
+              ? "bg-danger"
+              : "bg-warning";
+
+          const corTexto = tarefa.concluida
+            ? "text-dark"
+            : tarefaVencida
+              ? "text-warning"
+              : "text-secondary";
+
           return (
             <div
               key={tarefa.id}
-              className="d-flex flex-column align-items-center bg-warning rounded mt-4"
+              className={`d-flex flex-column align-items-center position-relative ${corCard} rounded mt-4`}
               style={{
                 width: "90%",
                 height: "100px",
                 overflow: "hidden",
               }}
             >
+              <div className="position-absolute top-0 end-0 me-4 mt-1 fw-semibold">
+                {dataEntregaFormatada}
+              </div>
               <div
                 className="fw-semibold"
                 style={{
-                  maxWidth: "95%",
+                  maxWidth: "48%",
                   overflowWrap: "anywhere",
                   wordBreak: "break-word",
                 }}
               >
                 {tituloLimitado}
               </div>
-              <div className="text-secondary fw-semibold">
+              <div className={`${corTexto} fw-bold`}>
                 Matéria: {nomeMateriaLimitado}
               </div>
               <hr
