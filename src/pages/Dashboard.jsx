@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   const [adicionandoMateria, setAdicionandoMateria] = useState(false);
 
-  const [apelidoUsuario, setApelidoUsuario] = useState("");
+  const [dadosUsuario, setDadosUsuario] = useState(null);
 
   const { setAtualizarMaterias } = useOutletContext();
 
@@ -139,7 +139,7 @@ export default function Dashboard() {
       try {
         const usuario = await buscarDadosUsuario();
 
-        setApelidoUsuario(usuario.apelido);
+        setDadosUsuario(usuario);
       } catch (error) {
         console.error(error);
       }
@@ -150,9 +150,18 @@ export default function Dashboard() {
 
   return (
     <main className="page">
-      {apelidoUsuario && (
+      {dadosUsuario?.apelido && (
         <div className="position-fixed top-0 start-50 translate-middle-x mt-3 text-white fw-semibold fs-2">
-          Bem-vindo, {apelidoUsuario}
+          Bem-vindo,{" "}
+          <span
+            className={
+              dadosUsuario.tipo === "administrador"
+                ? "text-info"
+                : "text-success"
+            }
+          >
+            {dadosUsuario.apelido}
+          </span>
         </div>
       )}
 
