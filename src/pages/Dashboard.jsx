@@ -18,7 +18,7 @@ export default function Dashboard() {
 
   const [dadosUsuario, setDadosUsuario] = useState(null);
 
-  const { setAtualizarMaterias } = useOutletContext();
+  const { setAtualizarMaterias, atualizarUsuario } = useOutletContext();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -146,7 +146,7 @@ export default function Dashboard() {
     }
 
     carregarDadosUsuario();
-  }, []);
+  }, [atualizarUsuario]);
 
   return (
     <main className="page">
@@ -199,6 +199,18 @@ export default function Dashboard() {
         <div className="text-primary ms-5 mt-3  fs-7 fw-semibold">
           Flashcards revisados hoje:{" "}
           <span className="text-white">{flashcardsRevisadosHoje}</span>
+        </div>
+        <div className="text-primary ms-5 mt-5  fs-7 fw-semibold">
+          Tipo de usuário:{" "}
+          <span
+            className={
+              dadosUsuario?.tipo === "administrador"
+                ? "text-info"
+                : "text-light"
+            }
+          >
+            {dadosUsuario?.tipo?.toUpperCase()}
+          </span>
         </div>
       </div>
       <button

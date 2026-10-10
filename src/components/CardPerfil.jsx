@@ -2,13 +2,24 @@ import { useEffect, useState } from "react";
 
 import CardLogOut from "./CardLogOut";
 
-import { buscarDadosUsuario } from "../services/usuarioService";
+import {
+  buscarDadosUsuario,
+  atualizarUsuario,
+} from "../services/usuarioService";
 
-export default function CardPerfil({ setPerfilAberto, handleLogout }) {
+export default function CardPerfil({
+  setPerfilAberto,
+  handleLogout,
+  setAtualizarUsuario,
+}) {
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
   const [fotoPerfil, setFotoPerfil] = useState(null);
 
   const [usuario, setUsuario] = useState(null);
+
+  const [editandoApelido, setEditandoApelido] = useState(false);
+
+  const [erro, setErro] = useState("");
 
   function SelecionarFoto(ev) {
     const arquivo = ev.target.files[0];
@@ -19,19 +30,32 @@ export default function CardPerfil({ setPerfilAberto, handleLogout }) {
     }
   }
 
-  function SalvarAlteracoes() {
-    alert("Salvando...");
-    setPerfilAberto(false);
+  async function SalvarAlteracoes() {
+    try {
+      setErro("");
+
+      const usuarioAtualizado = await atualizarUsuario(usuario.apelido);
+
+      setUsuario(usuarioAtualizado);
+
+      setAtualizarUsuario((valorAtual) => valorAtual + 1);
+
+      setPerfilAberto(false);
+    } catch (error) {
+      setErro(error.message);
+    }
   }
 
   useEffect(() => {
     async function carregarDadosUsuario() {
       try {
+        setErro("");
+
         const dadosUsuario = await buscarDadosUsuario();
 
         setUsuario(dadosUsuario);
       } catch (error) {
-        console.error(error);
+        setErro(error.message);
       }
     }
 
@@ -70,9 +94,32 @@ export default function CardPerfil({ setPerfilAberto, handleLogout }) {
           />
 
           <div className="w-100">
-            <p>
-              <span className="text-info">Apelido:</span> {usuario?.apelido}
-            </p>
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <input
+                type="text"
+                className={`form-control ${editandoApelido ? "bg-light" : "bg-info"} fw-semibold border border-3 border-secondary`}
+                value={usuario?.apelido ?? ""}
+                disabled={!editandoApelido}
+                maxLength={30}
+                onChange={(ev) =>
+                  setUsuario({ ...usuario, apelido: ev.target.value })
+                }
+              />
+
+              <button
+                type="button"
+                className={`btn ${editandoApelido ? "btn-primary" : "btn-secondary"} border border-2 border-black d-flex justify-content-center align-items-center`}
+                onClick={() => setEditandoApelido((valorAtual) => !valorAtual)}
+              >
+                ✏️
+              </button>
+            </div>
+
+            {erro && (
+              <div className="alert alert-danger mt-3" role="alert">
+                {erro}
+              </div>
+            )}
 
             <p>
               <span className="text-info">Email:</span> {usuario?.email}
@@ -84,6 +131,10 @@ export default function CardPerfil({ setPerfilAberto, handleLogout }) {
                 ? new Date(usuario.dataCriacao).toLocaleDateString("pt-BR")
                 : ""}
             </p>
+
+            <p>
+              <span className="text-info">Tipo:</span> {usuario?.tipo}
+            </p>
           </div>
 
           <div className="w-100 d-flex justify-content-between mt-3">
@@ -91,6 +142,7 @@ export default function CardPerfil({ setPerfilAberto, handleLogout }) {
               type="button"
               className="btn btn-success"
               onClick={SalvarAlteracoes}
+              disabled={!usuario}
             >
               Salvar
             </button>

@@ -7,12 +7,22 @@ export default function Layout() {
   // após alguma alteração, evitando uma atualização manual com F5.
   const [atualizarMaterias, setAtualizarMaterias] = useState(0);
 
+  const [atualizarUsuario, setAtualizarUsuario] = useState(0);
+
   return (
     <main className="page">
-      <Sidebar atualizarMaterias={atualizarMaterias} />
+      <Sidebar
+        atualizarMaterias={atualizarMaterias}
+        setAtualizarUsuario={setAtualizarUsuario}
+      />
 
       <section className="flex-grow-1">
-        <Outlet context={{ setAtualizarMaterias }} />
+        <Outlet
+          context={{
+            setAtualizarMaterias,
+            atualizarUsuario,
+          }}
+        />
       </section>
     </main>
   );

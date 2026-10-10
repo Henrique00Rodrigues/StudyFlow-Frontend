@@ -1,6 +1,6 @@
 import SidebarContent from "./SidebarContent";
 
-export default function SidebarMobile() {
+export default function SidebarMobile({ setAtualizarUsuario }) {
   return (
     <div
       className="offcanvas offcanvas-start bg-black text-white"
@@ -20,7 +20,10 @@ export default function SidebarMobile() {
       </div>
 
       <div className="offcanvas-body p-0 d-flex flex-column">
-        <SidebarContent hideTitle={true} />
+        <SidebarContent
+          hideTitle={true}
+          setAtualizarUsuario={setAtualizarUsuario}
+        />
       </div>
     </div>
   );

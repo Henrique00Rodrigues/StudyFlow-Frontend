@@ -6,7 +6,10 @@ import CardPerfil from "../CardPerfil";
 
 import { useAuth } from "../../contexts/AuthContext";
 
-export default function SidebarContent({ hideTitle = false }) {
+export default function SidebarContent({
+  hideTitle = false,
+  setAtualizarUsuario,
+}) {
   const [perfilAberto, setPerfilAberto] = useState(false);
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
 
@@ -91,6 +94,7 @@ export default function SidebarContent({ hideTitle = false }) {
         <CardPerfil
           setPerfilAberto={setPerfilAberto}
           handleLogout={handleLogout}
+          setAtualizarUsuario={setAtualizarUsuario}
         />
       )}
     </>
