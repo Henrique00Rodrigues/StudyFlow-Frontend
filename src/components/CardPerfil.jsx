@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import CardLogOut from "./CardLogOut";
+import CardExcluirConta from "./CardExcluirConta";
 
 import {
   buscarDadosUsuario,
@@ -18,6 +19,8 @@ export default function CardPerfil({
   const [usuario, setUsuario] = useState(null);
 
   const [editandoApelido, setEditandoApelido] = useState(false);
+
+  const [confirmandoExclusao, setConfirmandoExclusao] = useState(false);
 
   const [erro, setErro] = useState("");
 
@@ -146,13 +149,22 @@ export default function CardPerfil({
             >
               Salvar
             </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={() => setConfirmandoLogout(true)}
-            >
-              Log Out
-            </button>
+            <div className="d-flex gap-3">
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => setConfirmandoLogout(true)}
+              >
+                Log Out
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setConfirmandoExclusao(true)}
+              >
+                Excluir conta
+              </button>
+            </div>
           </div>
         </div>
 
@@ -168,6 +180,15 @@ export default function CardPerfil({
           setConfirmandoLogout={setConfirmandoLogout}
           setPerfilAberto={setPerfilAberto}
           handleLogout={handleLogout}
+        />
+      )}
+
+      {confirmandoExclusao && (
+        <CardExcluirConta
+          setConfirmandoExclusao={setConfirmandoExclusao}
+          setPerfilAberto={setPerfilAberto}
+          handleLogout={handleLogout}
+          usuario={usuario}
         />
       )}
     </>

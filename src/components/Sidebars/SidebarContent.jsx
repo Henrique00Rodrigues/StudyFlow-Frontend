@@ -15,8 +15,8 @@ export default function SidebarContent({
 
   const { logout } = useAuth();
 
-  async function handleLogout() {
-    await logout();
+  async function handleLogout(motivo = "logout") {
+    await logout(motivo);
   }
 
   return (

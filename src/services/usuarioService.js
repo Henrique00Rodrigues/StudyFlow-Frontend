@@ -38,3 +38,25 @@ export async function atualizarUsuario(apelido) {
 
   return data.usuario;
 }
+
+export async function deletarUsuario() {
+  const response = await fetch(`${API_URL}/usuarios/me`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    let mensagem = "Erro ao excluir conta.";
+
+    try {
+      const data = await response.json();
+      mensagem = data.mensagem || mensagem;
+    } catch {
+      // A resposta pode não possuir JSON.
+    }
+
+    throw new Error(mensagem);
+  }
+
+  return true;
+}

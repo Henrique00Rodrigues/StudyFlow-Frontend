@@ -11,7 +11,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
   const [carregando, setCarregando] = useState(true);
-  const [deslogando, setDeslogando] = useState(false);
+  const [motivoSaida, setMotivoSaida] = useState(null);
 
   useEffect(() => {
     async function verificarSessao() {
@@ -34,13 +34,15 @@ export function AuthProvider({ children }) {
 
     setUsuario(resultado.usuario);
 
+    setMotivoSaida(null);
+
     return resultado;
   }
 
-  async function logout() {
-    setDeslogando(true);
-
+  async function logout(motivo = "logout") {
     await logoutService();
+
+    setMotivoSaida(motivo);
 
     setUsuario(null);
   }
@@ -50,7 +52,7 @@ export function AuthProvider({ children }) {
       value={{
         usuario,
         carregando,
-        deslogando,
+        motivoSaida,
         login,
         logout,
       }}
