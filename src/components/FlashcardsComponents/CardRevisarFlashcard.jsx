@@ -1,18 +1,79 @@
 import { useState } from "react";
 
+import { revisarFlashcard } from "../../services/flashcardService";
+
 export default function CardRevisarFlashcard({
   flashcardRevisao,
   setFlashcardRevisao,
-  materia,
+  flashcards,
+  setAtualizarFlashcards,
+  FlashcardDisponivel,
 }) {
   const [mostrarVerso, setMostrarVerso] = useState(false);
 
-  function AcharProximoFlashcard(id) {
-    const indiceAtual = materia.flashcards.findIndex(
-      (flashcard) => flashcard.id === id,
+  const [erro, setErro] = useState("");
+
+  function AcharProximoFlashcard(idAtual, listaFlashcards) {
+    const indiceAtual = listaFlashcards.findIndex(
+      (flashcard) => flashcard.id === idAtual,
     );
-    // No futuro irá mudar. Eu vou precisar achar o próximo flashcard DISPONÍVEL. Tendo em vista que, muitos estarão indisponíveis por conta da repetição espaçada.
-    return materia.flashcards[indiceAtual + 1];
+
+    if (indiceAtual === -1) {
+      return null;
+    }
+
+    //Busca circular
+    for (
+      let deslocamento = 1;
+      deslocamento <= listaFlashcards.length;
+      deslocamento++
+    ) {
+      const indice = (indiceAtual + deslocamento) % listaFlashcards.length;
+
+      const flashcard = listaFlashcards[indice];
+
+      if (FlashcardDisponivel(flashcard)) {
+        return flashcard;
+      }
+    }
+
+    return null;
+  }
+
+  async function RegistrarRevisao(resultado) {
+    try {
+      setErro("");
+
+      //Atualiza flashcard revisado no backend
+      const flashcardAtualizado = await revisarFlashcard(
+        flashcardRevisao.id,
+        resultado,
+      );
+
+      // Atualiza temporariamente o cartão antigo pelo cartão atualizado devolvido pelo backend
+      const flashcardsAtualizados = flashcards.map((flashcard) =>
+        flashcard.id === flashcardAtualizado.id
+          ? flashcardAtualizado
+          : flashcard,
+      );
+
+      setAtualizarFlashcards((valorAtual) => valorAtual + 1);
+
+      //Retorna o próximo flashcard DISPONÍVEL para revisão usando a lista que já contém o resultado da revisão recém-atualizada.
+      const proximoFlashcard = AcharProximoFlashcard(
+        flashcardRevisao.id,
+        flashcardsAtualizados,
+      );
+
+      if (proximoFlashcard) {
+        setFlashcardRevisao(proximoFlashcard);
+        setMostrarVerso(false);
+      } else {
+        setFlashcardRevisao(null);
+      }
+    } catch (error) {
+      setErro(error.message);
+    }
   }
 
   return (
@@ -56,53 +117,25 @@ export default function CardRevisarFlashcard({
           {flashcardRevisao.verso}
         </div>
 
+        {erro && (
+          <div className="alert alert-danger mt-3" role="alert">
+            {erro}
+          </div>
+        )}
+
         <div className="d-flex justify-content-between mt-4">
           <button
+            type="button"
             className="btn btn-danger fw-semibold"
-            onClick={() => {
-              alert(
-                `Você errou o flashcard ${flashcardRevisao.id} da matéria de ${materia.nome}`,
-              ); //Futuramente será substituido por uma função que virá da classe Flashcards em POO
-
-              const proximoFlashcard = AcharProximoFlashcard(
-                flashcardRevisao.id,
-              );
-
-              if (proximoFlashcard) {
-                setFlashcardRevisao(proximoFlashcard);
-                setMostrarVerso(false);
-              } else {
-                alert(
-                  `Seus flashcards dessa matéria de ${materia.nome} acabaram!`,
-                );
-                setFlashcardRevisao(null);
-              }
-            }}
+            onClick={() => RegistrarRevisao("erro")}
           >
             Errei
           </button>
 
           <button
+            type="button"
             className="btn btn-success fw-semibold"
-            onClick={() => {
-              alert(
-                `Você acertou o flashcard ${flashcardRevisao.id} da matéria de ${materia.nome}`,
-              ); //Futuramente será substituido por uma função que virá da classe Flashcards em POO
-
-              const proximoFlashcard = AcharProximoFlashcard(
-                flashcardRevisao.id,
-              );
-
-              if (proximoFlashcard) {
-                setFlashcardRevisao(proximoFlashcard);
-                setMostrarVerso(false);
-              } else {
-                alert(
-                  `Seus flashcards dessa matéria de ${materia.nome} acabaram!`,
-                );
-                setFlashcardRevisao(null);
-              }
-            }}
+            onClick={() => RegistrarRevisao("acerto")}
           >
             Acertei
           </button>

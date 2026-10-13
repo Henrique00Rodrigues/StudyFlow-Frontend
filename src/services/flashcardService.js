@@ -93,3 +93,24 @@ export async function removerFlashcard(id) {
     throw new Error(data.mensagem || "Erro ao remover flashcard.");
   }
 }
+
+export async function revisarFlashcard(id, resultado) {
+  const response = await fetch(`${API_URL}/flashcards/${id}/revisar`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      resultado,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.mensagem || "Erro ao revisar flashcard.");
+  }
+
+  return data.flashcard;
+}

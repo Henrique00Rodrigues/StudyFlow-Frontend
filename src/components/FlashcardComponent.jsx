@@ -11,19 +11,65 @@ export default function FlashcardComponent({
   setAtualizarFlashcards,
   setMensagemSucesso,
 }) {
-  const [flashcards, setFlashcards] = useState([]);
+  const [flashcards, setFlashcards] = useState([]); //Armazenamento de flashcards
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
   const [flashcardSelecionado, setFlashcardSelecionado] = useState(null);
   const [flashcardRevisao, setFlashcardRevisao] = useState(null);
 
+  const [filtro, setFiltro] = useState("revisar");
+
+  const [agora, setAgora] = useState(new Date()); //Representa o horário que a interface está usando no momento atual
+
+  // Função que verifica se o flashcard está disponível para ser revisado no momento atual.
+  function FlashcardDisponivel(flashcard, horarioAtual = new Date()) {
+    if (!flashcard.proximaRevisao) {
+      return true;
+    }
+
+    return new Date(flashcard.proximaRevisao) <= horarioAtual;
+  }
+
+  const flashcardsFiltrados = flashcards.filter((flashcard) => {
+    if (filtro === "todos") {
+      return true;
+    }
+
+    if (filtro === "revisar") {
+      return FlashcardDisponivel(flashcard, agora);
+    }
+
+    if (filtro === "revisados") {
+      if (!flashcard.dataUltimaRevisao || !flashcard.proximaRevisao) {
+        return false;
+      }
+
+      return !FlashcardDisponivel(flashcard, agora);
+    }
+
+    return true;
+  });
+
+  //Atualiza o horário (estado 'agora') da interface duas vezes por segundo, deste modo, fazendo com que o React renderize o componente da página constantemente
+  useEffect(() => {
+    let milisegundos = 500;
+    const intervalo = setInterval(() => {
+      setAgora(new Date());
+
+      console.log(`${milisegundos}ms se passaram.`);
+      milisegundos += 500;
+    }, 500);
+
+    return () => clearInterval(intervalo);
+  }, []);
+
   useEffect(() => {
     async function carregarFlashcards() {
       try {
         setErro("");
 
-        const resultado = await listarFlashcardsMateria(materia.id);
+        const resultado = await listarFlashcardsMateria(materia.id); //Atualiza oficialmente os flashcards.
 
         setFlashcards(resultado);
       } catch (error) {
@@ -50,9 +96,43 @@ export default function FlashcardComponent({
 
   return (
     <>
+      <div className="d-flex gap-3 mt-4">
+        <button
+          type="button"
+          className={`btn ${
+            filtro === "revisar" ? "btn-warning" : "btn-secondary"
+          }`}
+          onClick={() => setFiltro("revisar")}
+        >
+          A revisar
+        </button>
+
+        <button
+          type="button"
+          className={`btn ${
+            filtro === "revisados" ? "btn-success" : "btn-secondary"
+          }`}
+          onClick={() => setFiltro("revisados")}
+        >
+          Revisados
+        </button>
+
+        <button
+          type="button"
+          className={`btn ${
+            filtro === "todos" ? "btn-primary" : "btn-secondary"
+          }`}
+          onClick={() => setFiltro("todos")}
+        >
+          Todos
+        </button>
+      </div>
+
       <div className="d-flex flex-wrap">
-        {flashcards.length > 0 ? (
-          flashcards.map((flashcard) => {
+        {flashcardsFiltrados.length > 0 ? (
+          flashcardsFiltrados.map((flashcard) => {
+            const disponivel = FlashcardDisponivel(flashcard, agora); //Utilizado para desabilitar o botão de revisar quando os flashcards não estiverem disponíveis para revisão no momento atual.
+
             const textoLimitado =
               flashcard.frente.length > 70
                 ? `${flashcard.frente.slice(0, 70)}...`
@@ -80,6 +160,7 @@ export default function FlashcardComponent({
                       height: "30px",
                     }}
                     onClick={() => setFlashcardRevisao(flashcard)}
+                    disabled={!disponivel}
                   >
                     REVISAR
                   </button>
@@ -100,7 +181,7 @@ export default function FlashcardComponent({
           })
         ) : (
           <h1 className="text-danger mx-auto" style={{ marginTop: "12rem" }}>
-            Vazio... ;P
+            Nenhum flashcard neste filtro.
           </h1>
         )}
       </div>
@@ -109,7 +190,9 @@ export default function FlashcardComponent({
         <CardRevisarFlashcard
           flashcardRevisao={flashcardRevisao}
           setFlashcardRevisao={setFlashcardRevisao}
-          materia={materia}
+          flashcards={flashcards}
+          setAtualizarFlashcards={setAtualizarFlashcards}
+          FlashcardDisponivel={FlashcardDisponivel}
         />
       )}
 
