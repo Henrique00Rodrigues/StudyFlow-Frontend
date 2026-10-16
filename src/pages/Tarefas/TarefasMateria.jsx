@@ -65,7 +65,7 @@ export default function TarefasMateria() {
   }
 
   return (
-    <main className="d-flex flex-column align-items-center">
+    <main className="d-flex flex-column align-items-center mb-5">
       {mensagemSucesso && (
         <div
           className="alert alert-success bg-success position-fixed top-0 start-50 fw-semibold translate-middle-x mt-3 mensagem-sucesso"

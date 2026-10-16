@@ -68,7 +68,7 @@ export default function TarefasGlobais() {
   });
 
   return (
-    <main className="d-flex flex-column align-items-center">
+    <main className="d-flex flex-column align-items-center mb-5">
       <h1 className="text-white">Tarefas Globais</h1>
 
       <div className="d-flex gap-3 mt-3">

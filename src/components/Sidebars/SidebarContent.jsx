@@ -50,7 +50,7 @@ export default function SidebarContent({
         </li>
 
         <li className="mb-3">
-          <NavLink className="text-white text-decoration-none" to="/">
+          <NavLink className="text-white text-decoration-none" to="/cronograma">
             Cronograma
           </NavLink>
         </li>

@@ -5,6 +5,7 @@ import Materia from "./pages/Materia";
 import Flashcards from "./pages/Flashcards";
 import TarefasGlobais from "./pages/Tarefas/TarefasGlobais";
 import TarefasMateria from "./pages/Tarefas/TarefasMateria";
+import Cronograma from "./pages/Cronograma";
 import Login from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/materias/:materiaId/tarefas",
         element: <TarefasMateria />,
+      },
+      {
+        path: "/cronograma",
+        element: <Cronograma />,
       },
     ],
   },
