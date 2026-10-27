@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { listarTarefas } from "../services/tarefaService";
+import { listarAtividadesPorMes } from "../services/atividadeDiariaService";
 
 import CardTarefasDoDia from "../components/CronogramaComponents/CardTarefasDoDia";
 
@@ -8,6 +9,8 @@ export default function Cronograma() {
   const [tarefas, setTarefas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+
+  const [atividades, setAtividades] = useState([]);
 
   const hoje = new Date(); //Cria um objeto contendo a data e hora atuais.
 
@@ -48,6 +51,22 @@ export default function Cronograma() {
   ];
 
   const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+  function BuscarAtividadeDoDia(dia) {
+    return atividades.find((atividade) => {
+      const dataAtividade = atividade.data.split("T")[0];
+
+      const [anoAtividade, mesAtividade, diaAtividade] = dataAtividade
+        .split("-")
+        .map(Number);
+
+      return (
+        anoAtividade === anoAtual &&
+        mesAtividade === mesAtual + 1 &&
+        diaAtividade === dia
+      );
+    });
+  }
 
   function BuscarTarefasDoDia(dia) {
     return tarefas.filter((tarefa) => {
@@ -100,6 +119,22 @@ export default function Cronograma() {
 
     carregarTarefas();
   }, []);
+
+  useEffect(() => {
+    async function carregarAtividades() {
+      try {
+        setErro("");
+
+        const resultado = await listarAtividadesPorMes(anoAtual, mesAtual + 1);
+
+        setAtividades(resultado);
+      } catch (error) {
+        setErro(error.message);
+      }
+    }
+
+    carregarAtividades();
+  }, [anoAtual, mesAtual]);
 
   if (carregando) {
     return <p className="text-white p-4">Carregando tarefas...</p>;
@@ -163,13 +198,21 @@ export default function Cronograma() {
 
         {diasCalendario.map((dia, indice) => {
           const tarefasDoDia = dia ? BuscarTarefasDoDia(dia) : [];
+          const atividadeDoDia = dia ? BuscarAtividadeDoDia(dia) : null;
+
+          const ehHoje =
+            dia === hoje.getDate() &&
+            mesAtual === hoje.getMonth() &&
+            anoAtual === hoje.getFullYear();
 
           return (
             <div
               key={indice}
-              className="border border-secondary p-2"
+              className={`position-relative border p-2 ${
+                ehHoje ? "bg-success" : "border-secondary"
+              }`}
               style={
-                tarefasDoDia.length > 0 //Se tiver tarefas no dia, o cursor do mouse ficará como clicável.
+                tarefasDoDia.length > 0 || atividadeDoDia //Se tiver tarefas ou atividade no dia, o cursor ficará como clicável.
                   ? {
                       minHeight: "100px",
                       cursor: "pointer",
@@ -179,12 +222,13 @@ export default function Cronograma() {
                     }
               }
               onClick={() => {
-                if (tarefasDoDia.length > 0) {
+                if (tarefasDoDia.length > 0 || atividadeDoDia) {
                   setDiaSelecionado({
                     dia,
                     mes: mesAtual,
                     ano: anoAtual,
                     tarefas: tarefasDoDia,
+                    atividade: atividadeDoDia,
                   });
                 }
               }}
@@ -192,7 +236,16 @@ export default function Cronograma() {
               {dia && (
                 <>
                   <span className="fw-semibold">{dia}</span>
-
+                  {(atividadeDoDia?.flashcardsRevisados > 0 ||
+                    atividadeDoDia?.flashcardsCriados > 0) && (
+                    <div
+                      className="position-absolute top-0 end-0 bg-primary m-2 border border-black"
+                      style={{
+                        width: "10px",
+                        height: "10px",
+                      }}
+                    ></div>
+                  )}
                   {tarefasDoDia.length > 0 && (
                     <div className="bg-warning rounded mt-2 p-1 text-center text-dark fw-semibold">
                       {tarefasDoDia.length}{" "}
@@ -206,7 +259,28 @@ export default function Cronograma() {
           );
         })}
       </div>
-
+      <h5 className="mt-3">Legenda:</h5>
+      <div className="mt-3 d-flex align-items-center">
+        <div
+          className="bg-success border border-2 border-black me-2"
+          style={{ width: "25px", height: "25px" }}
+        ></div>
+        <span>Dia atual</span>
+      </div>
+      <div className="mt-3 d-flex align-items-center">
+        <div
+          className="bg-warning border border-2 border-black me-2"
+          style={{ width: "25px", height: "25px" }}
+        ></div>
+        <span>Tarefas</span>
+      </div>
+      <div className="mt-3 d-flex align-items-center">
+        <div
+          className="bg-primary border border-2 border-black me-2"
+          style={{ width: "25px", height: "25px" }}
+        ></div>
+        <span>Dias com atividade de estudo</span>
+      </div>
       {diaSelecionado && (
         <CardTarefasDoDia
           diaSelecionado={diaSelecionado}
