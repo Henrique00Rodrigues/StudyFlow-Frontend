@@ -1,3 +1,5 @@
+import { createPortal } from "react-dom";
+
 export default function CardLogOut({
   setConfirmandoLogout,
   setPerfilAberto,
@@ -12,7 +14,7 @@ export default function CardLogOut({
     }
   }
 
-  return (
+  return createPortal(
     <div
       className="position-fixed translate-middle top-50 start-50 bg-dark border border-3 border-danger rounded p-4 text-white fw-semibold"
       style={{
@@ -44,6 +46,7 @@ export default function CardLogOut({
         className="btn-close btn-close-white position-absolute top-0 end-0 m-3"
         onClick={() => setConfirmandoLogout(false)}
       />
-    </div>
+    </div>,
+    document.body,
   );
 }

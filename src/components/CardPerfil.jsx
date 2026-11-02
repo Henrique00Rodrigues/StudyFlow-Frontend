@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import CardLogOut from "./CardLogOut";
 import CardExcluirConta from "./CardExcluirConta";
@@ -65,7 +66,7 @@ export default function CardPerfil({
     carregarDadosUsuario();
   }, []);
 
-  return (
+  return createPortal(
     <>
       <div
         className="position-fixed translate-middle top-50 start-50 bg-dark border border-3 border-info rounded p-4 text-white fw-semibold"
@@ -191,6 +192,7 @@ export default function CardPerfil({
           usuario={usuario}
         />
       )}
-    </>
+    </>,
+    document.body,
   );
 }
