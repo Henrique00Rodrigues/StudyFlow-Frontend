@@ -60,3 +60,26 @@ export async function deletarUsuario() {
 
   return true;
 }
+
+export async function atualizarFotoPerfil(arquivo) {
+  const formData = new FormData();
+
+  formData.append("fotoPerfil", arquivo);
+
+  const response = await fetch(
+    "http://localhost:3000/api/usuarios/foto-perfil",
+    {
+      method: "PATCH",
+      credentials: "include",
+      body: formData,
+    },
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.mensagem || "Erro ao atualizar foto de perfil.");
+  }
+
+  return data;
+}

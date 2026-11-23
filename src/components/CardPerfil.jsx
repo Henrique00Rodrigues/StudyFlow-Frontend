@@ -7,6 +7,7 @@ import CardExcluirConta from "./CardExcluirConta";
 import {
   buscarDadosUsuario,
   atualizarUsuario,
+  atualizarFotoPerfil,
 } from "../services/usuarioService";
 
 export default function CardPerfil({
@@ -16,6 +17,8 @@ export default function CardPerfil({
 }) {
   const [confirmandoLogout, setConfirmandoLogout] = useState(false);
   const [fotoPerfil, setFotoPerfil] = useState(null);
+
+  const [arquivoFotoPerfil, setArquivoFotoPerfil] = useState(null);
 
   const [usuario, setUsuario] = useState(null);
 
@@ -29,6 +32,8 @@ export default function CardPerfil({
     const arquivo = ev.target.files[0];
 
     if (arquivo) {
+      setArquivoFotoPerfil(arquivo);
+
       const urlFoto = URL.createObjectURL(arquivo);
       setFotoPerfil(urlFoto);
     }
@@ -39,6 +44,10 @@ export default function CardPerfil({
       setErro("");
 
       const usuarioAtualizado = await atualizarUsuario(usuario.apelido);
+
+      if (arquivoFotoPerfil) {
+        await atualizarFotoPerfil(arquivoFotoPerfil);
+      }
 
       setUsuario(usuarioAtualizado);
 
@@ -58,6 +67,10 @@ export default function CardPerfil({
         const dadosUsuario = await buscarDadosUsuario();
 
         setUsuario(dadosUsuario);
+
+        if (dadosUsuario.fotoPerfilUrl) {
+          setFotoPerfil(`http://localhost:3000${dadosUsuario.fotoPerfilUrl}`);
+        }
       } catch (error) {
         setErro(error.message);
       }
